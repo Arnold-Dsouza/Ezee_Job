@@ -1,0 +1,6 @@
+{
+  "name": "Ezee Job",
+  "description": "AI-powered LaTeX CV and Cover Letter tailor with real-time PDF compilation, gap analysis, and multi-provider AI support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

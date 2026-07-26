@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ezee Job</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Header Navigation -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-box">
+          <span class="logo-tex">T<sub class="tex-e">E</sub>X</span>
+          <span class="logo-title">Ezee Job</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="btn-load-sample" class="btn btn-secondary btn-sm" title="Load realistic sample CV & JD">
+          <i data-lucide="file-spread"></i>
+          <span>Load Sample Data</span>
+        </button>
+        <button id="btn-open-settings" class="btn btn-secondary btn-sm">
+          <i data-lucide="settings"></i>
+          <span>AI Settings</span>
+        </button>
+        <div id="ai-status-badge" class="status-badge" title="Active AI Provider">
+          <span class="status-dot"></span>
+          <span id="ai-provider-label">Gemini (2.0 Flash)</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="input-tab">
+        <i data-lucide="file-text"></i>
+        <span>1. Master CV & JD</span>
+      </button>
+      <button class="nav-tab" data-tab="email-editor-tab" id="tab-email-btn">
+        <i data-lucide="mail"></i>
+        <span>2. Application Email</span>
+        <span id="email-badge" class="badge-mini">Ready</span>
+      </button>
+      <button class="nav-tab" data-tab="cover-editor-tab" id="tab-cover-btn">
+        <i data-lucide="file-code"></i>
+        <span>3. Cover Letter (.tex)</span>
+        <span id="cover-badge" class="badge-mini">Ready</span>
+      </button>
+      <button class="nav-tab" data-tab="cv-editor-tab" id="tab-cv-btn">
+        <i data-lucide="code-2"></i>
+        <span>4. Tailored CV (.tex)</span>
+        <span id="cv-badge" class="badge-mini">Ready</span>
+      </button>
+    </nav>
+
+    <!-- Main Application Views -->
+    <main class="main-content">
+
+      <!-- SECTION 1: Inputs & Gap Analysis -->
+      <section id="input-tab" class="tab-page active">
+        <div class="grid-two-col">
+
+          <!-- Left Column: Master CV Panel -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">
+                <i data-lucide="user-check"></i>
+                <h2>Master CV / Resume</h2>
+              </div>
+              <div class="panel-actions">
+                <label for="pdf-upload-input" class="btn btn-secondary btn-xs" title="Upload PDF or Text file">
+                  <i data-lucide="upload-cloud"></i> Upload PDF
+                </label>
+                <input type="file" id="pdf-upload-input" accept=".pdf,.txt,.md" style="display: none;">
+                <button id="btn-save-master-cv" class="btn btn-secondary btn-xs" title="Save Master CV">
+                  <i data-lucide="save"></i> Save
+                </button>
+              </div>
+            </div>
+
+            <!-- Drag and Drop Zone -->
+            <div id="drop-zone" class="drop-zone">
+              <i data-lucide="file-up" class="drop-icon"></i>
+              <p>Drag & drop your Master CV (PDF/Markdown) or click to browse</p>
+            </div>
+
+            <div class="editor-wrapper">
+              <textarea id="master-cv-input" placeholder="Paste your Master CV in Markdown or plain text here..."></textarea>
+            </div>
+          </div>
+
+          <!-- Right Column: Target Job Description & Gap Analysis -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">
+                <i data-lucide="briefcase"></i>
+                <h2>Target Job Description</h2>
+              </div>
+              <div class="panel-actions">
+                <button id="btn-analyze-gap" class="btn btn-secondary btn-xs">
+                  <i data-lucide="bar-chart-2"></i> Run Gap Analysis
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group-inline">
+              <label for="target-title-input">Target Job Title:</label>
+              <input type="text" id="target-title-input" placeholder="e.g. Senior Full-Stack Engineer" value="Senior Full-Stack Engineer">
+            </div>
+
+            <div class="editor-wrapper">
+              <textarea id="jd-input" placeholder="Paste the target Job Description (JD) here..."></textarea>
+            </div>
+
+            <!-- Primary Tailor CTA Button -->
+            <div class="cta-banner">
+              <button id="btn-generate-tailored" class="btn btn-primary btn-lg btn-block">
+                <i data-lucide="sparkles"></i>
+                <span>Generate Tailored LaTeX CV & Cover Letter</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Gap Analysis Dashboard Widget -->
+        <div id="gap-dashboard" class="gap-dashboard panel-card" style="margin-top: 1.5rem;">
+          <div class="panel-header">
+            <div class="panel-title">
+              <i data-lucide="target" id="gap-header-icon"></i>
+              <h2 id="gap-analysis-title">Zero-LLM Keyword Match & Gap Analysis</h2>
+            </div>
+
+            <div class="gap-header-controls">
+              <!-- Mode Toggle Switch -->
+              <div class="gap-toggle-container" title="Toggle between Zero-LLM algorithmic matching and AI LLM-Driven semantic analysis">
+                <span id="label-zero-mode" class="toggle-mode-text active">Zero-LLM</span>
+                <label class="switch-toggle">
+                  <input type="checkbox" id="gap-mode-toggle">
+                  <span class="slider-round"></span>
+                </label>
+                <span id="label-llm-mode" class="toggle-mode-text">LLM-Driven</span>
+              </div>
+
+              <div id="match-score-badge" class="score-badge">Match: 0%</div>
+            </div>
+          </div>
+
+          <!-- Description Banner for active Mode -->
+          <div id="gap-mode-banner" class="gap-mode-banner zero-mode">
+            <i data-lucide="zap" class="banner-icon"></i>
+            <span id="gap-mode-banner-text"><strong>Zero-LLM Mode:</strong> Fast, deterministic NLP skill extraction without AI API cost or hallucination.</span>
+          </div>
+
+          <div class="gap-content-grid">
+            <!-- Score Meter -->
+            <div class="score-card">
+              <div class="radial-progress-wrapper">
+                <svg class="radial-svg" viewBox="0 0 100 100">
+                  <circle class="radial-bg" cx="50" cy="50" r="40"></circle>
+                  <circle id="radial-progress-bar" class="radial-bar" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                </svg>
+                <div class="radial-text">
+                  <span id="radial-score-value">0%</span>
+                  <span class="radial-label">Skill Match</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Matched Skills -->
+            <div class="skills-column">
+              <h3 class="skills-title text-success"><i data-lucide="check-circle-2"></i> Existing Matched Skills</h3>
+              <div id="matched-skills-tags" class="tags-wrapper">
+                <span class="text-muted">Run analysis to identify matched keywords.</span>
+              </div>
+            </div>
+
+            <!-- Missing Skills -->
+            <div class="skills-column">
+              <h3 class="skills-title text-warning"><i data-lucide="alert-triangle"></i> Missing / Gap Skills</h3>
+              <div id="missing-skills-tags" class="tags-wrapper">
+                <span class="text-muted">Run analysis to identify skill gaps.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Tailoring Pipeline Status -->
+          <div class="pipeline-status-box">
+            <div class="pipeline-header">
+              <div class="pipeline-title">
+                <i data-lucide="cpu" class="icon-indigo"></i>
+                <h4>AI Tailoring Pipeline Execution Status</h4>
+              </div>
+              <div id="pipeline-status-badge" class="pipeline-badge status-idle">
+                <span class="status-dot"></span>
+                <span id="pipeline-status-text">Engine Standby</span>
+              </div>
+            </div>
+
+            <!-- Overall Pipeline Progress Bar -->
+            <div class="pipeline-progress-wrapper">
+              <div class="pipeline-progress-info">
+                <span id="pipeline-current-action">Pipeline Idle - Ready for Ingestion</span>
+                <span id="pipeline-percent" class="font-mono">0%</span>
+              </div>
+              <div class="pipeline-progress-track">
+                <div id="pipeline-progress-fill" class="pipeline-progress-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Pipeline Step Grid -->
+            <div class="pipeline-steps-grid">
+              <div class="pipeline-step-item" id="p-step-1" data-step="1">
+                <div class="step-icon"><i data-lucide="file-text"></i></div>
+                <div class="step-content">
+                  <span class="step-name">1. CV & JD Ingestion</span>
+                  <span class="step-state text-muted" id="p-step-1-state">Pending</span>
+                </div>
+              </div>
+
+              <div class="pipeline-step-item" id="p-step-2" data-step="2">
+                <div class="step-icon"><i data-lucide="git-compare"></i></div>
+                <div class="step-content">
+                  <span class="step-name">2. Gap & Skill Matrix</span>
+                  <span class="step-state text-muted" id="p-step-2-state">Pending</span>
+                </div>
+              </div>
+
+              <div class="pipeline-step-item" id="p-step-3" data-step="3">
+                <div class="step-icon"><i data-lucide="mail"></i></div>
+                <div class="step-content">
+                  <span class="step-name">3. Application Email</span>
+                  <span class="step-state text-muted" id="p-step-3-state">Pending</span>
+                </div>
+              </div>
+
+              <div class="pipeline-step-item" id="p-step-4" data-step="4">
+                <div class="step-icon"><i data-lucide="file-code"></i></div>
+                <div class="step-content">
+                  <span class="step-name">4. Cover Letter (.tex)</span>
+                  <span class="step-state text-muted" id="p-step-4-state">Pending</span>
+                </div>
+              </div>
+
+              <div class="pipeline-step-item" id="p-step-5" data-step="5">
+                <div class="step-icon"><i data-lucide="code-2"></i></div>
+                <div class="step-content">
+                  <span class="step-name">5. Tailored CV (.tex)</span>
+                  <span class="step-state text-muted" id="p-step-5-state">Pending</span>
+                </div>
+              </div>
+
+              <div class="pipeline-step-item" id="p-step-6" data-step="6">
+                <div class="step-icon"><i data-lucide="file-check-2"></i></div>
+                <div class="step-content">
+                  <span class="step-name">6. Vector PDF Compile</span>
+                  <span class="step-state text-muted" id="p-step-6-state">Pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- SECTION 2: Overleaf-Style Split Editor - Tailored CV -->
+      <section id="cv-editor-tab" class="tab-page">
+        <div class="split-editor-container" id="cv-split-container">
+          
+          <!-- Editor Toolbar -->
+          <div class="editor-toolbar">
+            <div class="doc-title-info">
+              <i data-lucide="file-code-2" class="icon-tex"></i>
+              <span class="doc-filename">tailored-cv.tex</span>
+              <span id="cv-compile-status" class="status-indicator ready">
+                <span class="indicator-dot"></span> Ready
+              </span>
+            </div>
+
+            <div class="toolbar-actions">
+              <button id="btn-recompile-cv" class="btn btn-success btn-sm">
+                <i data-lucide="refresh-cw"></i>
+                <span>Recompile Preview</span>
+              </button>
+              <button id="btn-copy-cv-tex" class="btn btn-secondary btn-sm" title="Copy TeX Code">
+                <i data-lucide="copy"></i> Copy TeX
+              </button>
+              <button id="btn-download-cv-tex" class="btn btn-secondary btn-sm" title="Download .tex file">
+                <i data-lucide="file-down"></i> .tex
+              </button>
+              <a id="btn-download-cv-pdf" href="#" download class="btn btn-primary btn-sm" title="Download PDF file">
+                <i data-lucide="download"></i> Download PDF
+              </a>
+              <button class="btn btn-icon btn-secondary toggle-fullscreen-btn" data-target="cv-split-container" title="Toggle Fullscreen">
+                <i data-lucide="maximize-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Two-Column Overleaf Split Screen -->
+          <div class="split-body">
+            <!-- Left Pane: LaTeX Code Area -->
+            <div class="split-pane pane-code">
+              <div class="pane-header">
+                <span>LaTeX Source Code</span>
+                <span class="code-lang">LaTeX / TeX</span>
+              </div>
+              <textarea id="cv-tex-code" class="code-editor" spellcheck="false" placeholder="% Generated LaTeX code will appear here..."></textarea>
+            </div>
+
+            <!-- Resizer divider -->
+            <div class="pane-resizer"></div>
+
+            <!-- Right Pane: Live PDF Preview Frame -->
+            <div class="split-pane pane-preview">
+              <div class="pane-header">
+                <span>Compiled PDF Preview</span>
+                <div class="preview-controls">
+                  <button id="btn-refresh-cv-frame" class="btn btn-xs btn-secondary" title="Refresh frame">
+                    <i data-lucide="rotate-cw"></i> Refresh Frame
+                  </button>
+                  <a id="btn-open-cv-pdf-tab" href="#" target="_blank" class="btn btn-xs btn-secondary" title="Open PDF in new tab">
+                    <i data-lucide="external-link"></i> New Tab
+                  </a>
+                </div>
+              </div>
+              <div class="iframe-wrapper">
+                <iframe id="cv-pdf-frame" src="about:blank" title="CV PDF Preview"></iframe>
+                <div id="cv-loading-overlay" class="loading-overlay" style="display: none;">
+                  <div class="spinner"></div>
+                  <p>Compiling LaTeX to PDF on server...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- SECTION 2: Tailored Application Email -->
+      <section id="email-editor-tab" class="tab-page">
+        <div class="panel-card email-card">
+          <div class="panel-header">
+            <div class="panel-title">
+              <i data-lucide="mail"></i>
+              <h2>Tailored Recruiter & Hiring Manager Email</h2>
+            </div>
+            <div class="panel-actions">
+              <button id="btn-copy-email-subject" class="btn btn-secondary btn-xs" title="Copy Email Subject">
+                <i data-lucide="copy"></i> Copy Subject
+              </button>
+              <button id="btn-copy-email-body" class="btn btn-primary btn-xs" title="Copy Email Body">
+                <i data-lucide="copy"></i> Copy Email Text
+              </button>
+              <button id="btn-download-email-txt" class="btn btn-secondary btn-xs" title="Download .txt">
+                <i data-lucide="download"></i> Download .txt
+              </button>
+            </div>
+          </div>
+
+          <div class="email-subject-box">
+            <label for="email-subject-input"><i data-lucide="tag"></i> Subject Line:</label>
+            <input type="text" id="email-subject-input" class="form-control" placeholder="Email subject will be generated here..." value="Application for Senior Full-Stack Engineer - Alex Rivera">
+          </div>
+
+          <div class="editor-wrapper email-body-wrapper">
+            <textarea id="email-body-input" placeholder="Your tailored recruiter email will appear here..."></textarea>
+          </div>
+
+          <div class="ai-note-card">
+            <div class="ai-note-header">
+              <i data-lucide="sparkles"></i>
+              <span>AI Outreach Note & Strategy:</span>
+            </div>
+            <p>This email is tailored to address the core requirements in the Job Description while referencing specific quantitative outcomes from your Master CV. Feel free to tweak the tone before sending!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: Overleaf-Style Split Editor - Cover Letter -->
+      <section id="cover-editor-tab" class="tab-page">
+        <div class="split-editor-container" id="cover-split-container">
+          
+          <!-- Editor Toolbar -->
+          <div class="editor-toolbar">
+            <div class="doc-title-info">
+              <i data-lucide="mail-check" class="icon-tex"></i>
+              <span class="doc-filename">cover-letter.tex</span>
+              <span id="cover-compile-status" class="status-indicator ready">
+                <span class="indicator-dot"></span> Ready
+              </span>
+            </div>
+
+            <div class="toolbar-actions">
+              <button id="btn-recompile-cover" class="btn btn-success btn-sm">
+                <i data-lucide="refresh-cw"></i>
+                <span>Recompile Preview</span>
+              </button>
+              <button id="btn-copy-cover-tex" class="btn btn-secondary btn-sm" title="Copy TeX Code">
+                <i data-lucide="copy"></i> Copy TeX
+              </button>
+              <button id="btn-download-cover-tex" class="btn btn-secondary btn-sm" title="Download .tex file">
+                <i data-lucide="file-down"></i> .tex
+              </button>
+              <a id="btn-download-cover-pdf" href="#" download class="btn btn-primary btn-sm" title="Download PDF file">
+                <i data-lucide="download"></i> Download PDF
+              </a>
+              <button class="btn btn-icon btn-secondary toggle-fullscreen-btn" data-target="cover-split-container" title="Toggle Fullscreen">
+                <i data-lucide="maximize-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Two-Column Overleaf Split Screen -->
+          <div class="split-body">
+            <!-- Left Pane: LaTeX Code Area -->
+            <div class="split-pane pane-code">
+              <div class="pane-header">
+                <span>LaTeX Source Code</span>
+                <span class="code-lang">LaTeX / TeX</span>
+              </div>
+              <textarea id="cover-tex-code" class="code-editor" spellcheck="false" placeholder="% Generated Cover Letter LaTeX code will appear here..."></textarea>
+            </div>
+
+            <!-- Resizer divider -->
+            <div class="pane-resizer"></div>
+
+            <!-- Right Pane: Live PDF Preview Frame -->
+            <div class="split-pane pane-preview">
+              <div class="pane-header">
+                <span>Compiled PDF Preview</span>
+                <div class="preview-controls">
+                  <button id="btn-refresh-cover-frame" class="btn btn-xs btn-secondary" title="Refresh frame">
+                    <i data-lucide="rotate-cw"></i> Refresh Frame
+                  </button>
+                  <a id="btn-open-cover-pdf-tab" href="#" target="_blank" class="btn btn-xs btn-secondary" title="Open PDF in new tab">
+                    <i data-lucide="external-link"></i> New Tab
+                  </a>
+                </div>
+              </div>
+              <div class="iframe-wrapper">
+                <iframe id="cover-pdf-frame" src="about:blank" title="Cover Letter PDF Preview"></iframe>
+                <div id="cover-loading-overlay" class="loading-overlay" style="display: none;">
+                  <div class="spinner"></div>
+                  <p>Compiling Cover Letter LaTeX to PDF...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- AI Provider Settings Modal -->
+    <div id="settings-modal" class="modal-backdrop" style="display: none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i data-lucide="sliders"></i>
+            <h3>Multi-Provider AI Engine Configuration</h3>
+          </div>
+          <button id="btn-close-settings" class="btn-close">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="provider-select">Select AI Provider:</label>
+            <select id="provider-select" class="form-control">
+              <option value="gemini">Google Gemini (@google/genai)</option>
+              <option value="openrouter">OpenRouter (Claude 3.5, GPT-4o, DeepSeek)</option>
+              <option value="openai">OpenAI (GPT-4o, GPT-4o-mini)</option>
+              <option value="custom">Custom Local Endpoint (Ollama / LM Studio)</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="api-key-group">
+            <label for="api-key-input">API Key:</label>
+            <div class="input-with-button">
+              <input type="password" id="api-key-input" class="form-control" placeholder="Enter API Key (or leave empty if env key is set)">
+              <button id="btn-toggle-key-visibility" class="btn btn-secondary btn-sm" type="button">Show</button>
+            </div>
+            <small class="form-help">Keys are saved locally in your browser session and used securely server-side.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="model-name-input">Model Name:</label>
+            <input type="text" id="model-name-input" class="form-control" value="gemini-2.0-flash" placeholder="e.g. gemini-2.0-flash, gpt-4o-mini, anthropic/claude-3.5-sonnet">
+          </div>
+
+          <div class="form-group" id="base-url-group" style="display: none;">
+            <label for="base-url-input">Base Endpoint URL:</label>
+            <input type="text" id="base-url-input" class="form-control" value="http://localhost:11434/v1/chat/completions" placeholder="http://localhost:11434/v1/chat/completions">
+          </div>
+
+          <!-- Connection Status Callout -->
+          <div id="connection-status-msg" class="alert-box" style="display: none;"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="btn-test-connection" class="btn btn-secondary">
+            <i data-lucide="zap"></i> Test Connection
+          </button>
+          <button id="btn-save-settings" class="btn btn-primary">
+            <i data-lucide="check"></i> Save Settings
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
