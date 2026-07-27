@@ -77,13 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnRecompileCover = document.getElementById('btn-recompile-cover');
   const btnCopyCvTex = document.getElementById('btn-copy-cv-tex');
   const btnCopyCoverTex = document.getElementById('btn-copy-cover-tex');
-  const btnCopyCoverHtml = document.getElementById('btn-copy-cover-html');
 
   const btnDownloadCvPdf = document.getElementById('btn-download-cv-pdf');
   const btnDownloadCoverPdf = document.getElementById('btn-download-cover-pdf');
   const btnDownloadCvTex = document.getElementById('btn-download-cv-tex');
   const btnDownloadCoverTex = document.getElementById('btn-download-cover-tex');
-  const btnDownloadCoverHtml = document.getElementById('btn-download-cover-html');
 
   const btnRefreshCvFrame = document.getElementById('btn-refresh-cv-frame');
   const btnRefreshCoverFrame = document.getElementById('btn-refresh-cover-frame');
@@ -279,12 +277,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnCopyCvTex.addEventListener('click', () => copyToClipboard(cvTexCode.value, 'CV LaTeX code copied!'));
     btnCopyCoverTex.addEventListener('click', () => copyToClipboard(coverTexCode.value, 'Cover Letter HTML copied!'));
-  btnCopyCoverHtml.addEventListener('click', () => copyToClipboard(coverTexCode.value, 'Cover Letter HTML copied!'));
 
-  // Download .tex
-  btnDownloadCvTex.addEventListener('click', () => downloadTextFile('tailored-cv.tex', cvTexCode.value));
-  btnDownloadCoverTex.addEventListener('click', () => downloadTextFile('cover-letter.tex', coverTexCode.value));
-  btnDownloadCoverHtml.addEventListener('click', () => downloadTextFile('cover-letter.html', coverTexCode.value));
+    // Download .tex
+    btnDownloadCvTex.addEventListener('click', () => downloadTextFile('tailored-cv.tex', cvTexCode.value));
+    btnDownloadCoverTex.addEventListener('click', () => downloadTextFile('cover-letter.html', coverTexCode.value));
+
     // Refresh Frames
     btnRefreshCvFrame.addEventListener('click', () => {
       if (cvPdfFrame.src) cvPdfFrame.src = cvPdfFrame.src.split('?')[0] + '?t=' + Date.now();

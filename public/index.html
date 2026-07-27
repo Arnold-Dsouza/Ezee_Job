@@ -51,7 +51,7 @@
       </button>
       <button class="nav-tab" data-tab="cover-editor-tab" id="tab-cover-btn">
         <i data-lucide="file-code"></i>
-        <span>3. Cover Letter</span>
+        <span>3. Cover Letter (HTML)</span>
         <span id="cover-badge" class="badge-mini">Ready</span>
       </button>
       <button class="nav-tab" data-tab="cv-editor-tab" id="tab-cv-btn">
@@ -244,7 +244,7 @@
               </div>
 
               <div class="pipeline-step-item" id="p-step-4" data-step="4">
-                <div class="step-icon"><i data-lucide="file-text"></i></div>
+                <div class="step-icon"><i data-lucide="file-code"></i></div>
                 <div class="step-content">
                   <span class="step-name">4. Cover Letter (HTML)</span>
                   <span class="step-state text-muted" id="p-step-4-state">Pending</span>
@@ -312,8 +312,8 @@
             <!-- Left Pane: LaTeX Code Area -->
             <div class="split-pane pane-code">
               <div class="pane-header">
-                <span>Source Code</span>
-                <span class="code-lang">Cover Letter</span>
+                <span>LaTeX Source Code</span>
+                <span class="code-lang">LaTeX / TeX</span>
               </div>
               <textarea id="cv-tex-code" class="code-editor" spellcheck="false" placeholder="% Generated LaTeX code will appear here..."></textarea>
             </div>
@@ -388,7 +388,7 @@
         </div>
       </section>
 
-      <!-- SECTION 3: HTML Cover Letter Editor -->
+      <!-- SECTION 3: Overleaf-Style Split Editor - Cover Letter -->
       <section id="cover-editor-tab" class="tab-page">
         <div class="split-editor-container" id="cover-split-container">
           
@@ -396,7 +396,7 @@
           <div class="editor-toolbar">
             <div class="doc-title-info">
               <i data-lucide="mail-check" class="icon-tex"></i>
-              <span class="doc-filename">cover-letter.html</span>
+              <span class="doc-filename">cover-letter.tex</span>
               <span id="cover-compile-status" class="status-indicator ready">
                 <span class="indicator-dot"></span> Ready
               </span>
@@ -407,11 +407,11 @@
                 <i data-lucide="refresh-cw"></i>
                 <span>Recompile Preview</span>
               </button>
-              <button id="btn-copy-cover-html" class="btn btn-secondary btn-sm" title="Copy HTML Code">
-                <i data-lucide="copy"></i> Copy HTML
+              <button id="btn-copy-cover-tex" class="btn btn-secondary btn-sm" title="Copy TeX Code">
+                <i data-lucide="copy"></i> Copy TeX
               </button>
-              <button id="btn-download-cover-html" class="btn btn-secondary btn-sm" title="Download .html file">
-                <i data-lucide="file-down"></i> .html
+              <button id="btn-download-cover-tex" class="btn btn-secondary btn-sm" title="Download .tex file">
+                <i data-lucide="file-down"></i> .tex
               </button>
               <a id="btn-download-cover-pdf" href="#" download class="btn btn-primary btn-sm" title="Download PDF file">
                 <i data-lucide="download"></i> Download PDF
@@ -422,15 +422,15 @@
             </div>
           </div>
 
-          <!-- Two-Column Split Screen -->
+          <!-- Two-Column Overleaf Split Screen -->
           <div class="split-body">
-            <!-- Left Pane: HTML Code Area -->
+            <!-- Left Pane: LaTeX Code Area -->
             <div class="split-pane pane-code">
               <div class="pane-header">
-                <span>HTML Source Code</span>
-                <span class="code-lang">HTML</span>
+                <span>LaTeX Source Code</span>
+                <span class="code-lang">LaTeX / TeX</span>
               </div>
-              <textarea id="cover-tex-code" class="code-editor" spellcheck="false" placeholder="Generated Cover Letter HTML code will appear here..."></textarea>
+              <textarea id="cover-tex-code" class="code-editor" spellcheck="false" placeholder="% Generated Cover Letter LaTeX code will appear here..."></textarea>
             </div>
 
             <!-- Resizer divider -->
@@ -453,7 +453,7 @@
                 <iframe id="cover-pdf-frame" src="about:blank" title="Cover Letter PDF Preview"></iframe>
                 <div id="cover-loading-overlay" class="loading-overlay" style="display: none;">
                   <div class="spinner"></div>
-                  <p>Compiling Cover Letter HTML to PDF...</p>
+                  <p>Compiling Cover Letter LaTeX to PDF...</p>
                 </div>
               </div>
             </div>
