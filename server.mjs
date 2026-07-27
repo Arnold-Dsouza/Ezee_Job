@@ -7,6 +7,7 @@ import { parsePdfToMarkdown, structureTextToMarkdown } from './lib/parser.mjs';
 import { analyzeGap, analyzeGapLlm } from './lib/gap-analyzer.mjs';
 import { testAiConnection, generateTailoredDocument } from './lib/tailor-engine.mjs';
 import { compileLatexToPdf } from './lib/latex-compiler.mjs';
+import { compileHtmlToPdf } from './lib/html-compiler.mjs';
 
 dotenv.config();
 
@@ -174,7 +175,7 @@ app.post('/api/generate-tailored', async (req, res) => {
     }
 
     // 2. Run AI Tailor Engine with computed gap matrix
-    const { applicationEmail, tailoredCvTex, coverLetterTex } = await generateTailoredDocument({
+    const { applicationEmail, tailoredCvTex, coverLetterHtml } = await generateTailoredDocument({
       masterCv,
       jobDescription,
       targetTitle,
@@ -184,17 +185,17 @@ app.post('/api/generate-tailored', async (req, res) => {
 
     // 3. Compile LaTeX to PDFs
     const cvCompilation = await compileLatexToPdf(tailoredCvTex, 'cv');
-    const coverCompilation = await compileLatexToPdf(coverLetterTex, 'cover');
+    const coverCompilation = await compileHtmlToPdf(coverLetterHtml, 'cover');
 
     res.json({
       success: true,
       applicationEmail,
       tailoredCvTex,
-      coverLetterTex,
+      coverLetterHtml,
       cvPdfUrl: cvCompilation.pdfUrl,
       coverPdfUrl: coverCompilation.pdfUrl,
       cvTexUrl: cvCompilation.texUrl,
-      coverTexUrl: coverCompilation.texUrl,
+      coverHtmlUrl: coverCompilation.htmlUrl,
       gapAnalysis: gapReport
     });
   } catch (err) {
@@ -206,13 +207,23 @@ app.post('/api/generate-tailored', async (req, res) => {
 // Recompile LaTeX preview
 app.post('/api/recompile', async (req, res) => {
   try {
-    const { latexCode, docType = 'cv' } = req.body;
+    const { content, docType = 'cv' } = req.body;
 
-    if (!latexCode) {
-      return res.status(400).json({ error: 'latexCode is required.' });
+    if (!content) {
+      return res.status(400).json({ error: 'content is required.' });
     }
 
-    const compilation = await compileLatexToPdf(latexCode, docType);
+    if (docType === 'cover') {
+      const compilation = await compileHtmlToPdf(content, docType);
+      return res.json({
+        success: true,
+        pdfUrl: compilation.pdfUrl,
+        htmlUrl: compilation.htmlUrl,
+        fileName: compilation.fileName
+      });
+    }
+
+    const compilation = await compileLatexToPdf(content, docType);
     res.json({
       success: true,
       pdfUrl: compilation.pdfUrl,

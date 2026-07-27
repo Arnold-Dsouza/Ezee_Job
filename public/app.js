@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     applicationEmail: { subject: '', body: '' },
     tailoredCvTex: '',
-    coverLetterTex: '',
+    coverLetterHtml: '',
     cvPdfUrl: '',
     coverPdfUrl: '',
     gapAnalysis: null,
@@ -276,11 +276,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     btnCopyCvTex.addEventListener('click', () => copyToClipboard(cvTexCode.value, 'CV LaTeX code copied!'));
-    btnCopyCoverTex.addEventListener('click', () => copyToClipboard(coverTexCode.value, 'Cover Letter LaTeX code copied!'));
+    btnCopyCoverTex.addEventListener('click', () => copyToClipboard(coverTexCode.value, 'Cover Letter HTML copied!'));
 
     // Download .tex
     btnDownloadCvTex.addEventListener('click', () => downloadTextFile('tailored-cv.tex', cvTexCode.value));
-    btnDownloadCoverTex.addEventListener('click', () => downloadTextFile('cover-letter.tex', coverTexCode.value));
+    btnDownloadCoverTex.addEventListener('click', () => downloadTextFile('cover-letter.html', coverTexCode.value));
 
     // Refresh Frames
     btnRefreshCvFrame.addEventListener('click', () => {
@@ -551,11 +551,11 @@ document.addEventListener('DOMContentLoaded', () => {
         emailBadge.textContent = 'Ready ✓';
       }
 
-      // Stage 4: Validate and populate Cover Letter
-      if (data.coverLetterTex) {
-        state.coverLetterTex = data.coverLetterTex;
-        coverTexCode.value = data.coverLetterTex;
-        updatePipelineStep(4, 'completed', 'Stage 4: Cover Letter TeX generated ✓');
+      // Stage 4: Validate and populate Cover Letter HTML
+      if (data.coverLetterHtml) {
+        state.coverLetterHtml = data.coverLetterHtml;
+        coverTexCode.value = data.coverLetterHtml;
+        updatePipelineStep(4, 'completed', 'Stage 4: Cover Letter HTML generated ✓');
         if (coverBadge) {
           coverBadge.classList.add('badge-success');
           coverBadge.textContent = 'Ready ✓';
@@ -596,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Complete all pipeline stages in UI once outputs are verified
-      setPipelineComplete('Pipeline finished: Application Email, Cover Letter, CV LaTeX & Vector PDFs ready!');
+      setPipelineComplete('Pipeline finished: Application Email, Cover Letter HTML, CV LaTeX & PDFs ready!');
 
       showNotification('Tailored Email, Cover Letter & CV generated successfully!', 'success');
 
@@ -607,13 +607,13 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Generation error:', err);
       showNotification(`Generation failed: ${err.message}`, 'error');
       if (!state.applicationEmail.subject && emailBadge) { emailBadge.classList.remove('badge-success'); emailBadge.textContent = 'Pending'; }
-      if (!state.coverLetterTex && coverBadge) { coverBadge.classList.remove('badge-success'); coverBadge.textContent = 'Pending'; }
+      if (!state.coverLetterHtml && coverBadge) { coverBadge.classList.remove('badge-success'); coverBadge.textContent = 'Pending'; }
       if (!state.tailoredCvTex && cvBadge) { cvBadge.classList.remove('badge-success'); cvBadge.textContent = 'Pending'; }
       if (pipelineElements.statusBadge) pipelineElements.statusBadge.className = 'pipeline-badge status-idle';
       if (pipelineElements.statusText) pipelineElements.statusText.textContent = 'Pipeline Interrupted';
     } finally {
       btnGenerateTailored.disabled = false;
-      btnGenerateTailored.innerHTML = `<i data-lucide="sparkles"></i> <span>Generate Tailored LaTeX CV & Cover Letter</span>`;
+      btnGenerateTailored.innerHTML = `<i data-lucide="sparkles"></i> <span>Generate Tailored CV & Cover Letter</span>`;
       cvLoadingOverlay.style.display = 'none';
       coverLoadingOverlay.style.display = 'none';
       if (window.lucide) window.lucide.createIcons();
@@ -623,13 +623,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Recompile Document Logic ---
   async function recompileDocument(docType) {
     const isCv = docType === 'cv';
-    const latexCode = isCv ? cvTexCode.value : coverTexCode.value;
+    const content = isCv ? cvTexCode.value : coverTexCode.value;
     const loadingOverlay = isCv ? cvLoadingOverlay : coverLoadingOverlay;
     const iframe = isCv ? cvPdfFrame : coverPdfFrame;
     const downloadBtn = isCv ? btnDownloadCvPdf : btnDownloadCoverPdf;
     const openTabBtn = isCv ? btnOpenCvPdfTab : btnOpenCoverPdfTab;
 
-    if (!latexCode) return;
+    if (!content) return;
 
     loadingOverlay.style.display = 'flex';
 
@@ -637,7 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch('/api/recompile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ latexCode, docType })
+        body: JSON.stringify({ content, docType })
       });
 
       const data = await res.json();

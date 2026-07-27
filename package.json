@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.80",
+    "@sparticuz/chromium": "^149.0.0",
     "@google/genai": "^2.4.0",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
@@ -23,6 +24,7 @@
     "node-latex": "^3.1.0",
     "pdf-parse": "^2.4.5",
     "pdfkit": "^0.19.1",
+    "puppeteer-core": "^25.3.0",
     "react": "^19.0.1",
     "react-dom": "^19.0.1"
   },
