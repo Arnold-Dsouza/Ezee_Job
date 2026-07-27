@@ -156,7 +156,7 @@ app.post('/api/test-connection', async (req, res) => {
   }
 });
 
-// Generate Tailored Application (LaTeX CV & Cover Letter + PDF Compilation)
+// Generate Tailored Application (LaTeX CV & HTML Cover Letter)
 app.post('/api/generate-tailored', async (req, res) => {
   try {
     const { masterCv, jobDescription, targetTitle, config, gapMode = 'zero-llm' } = req.body;
