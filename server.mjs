@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import { parsePdfToMarkdown, structureTextToMarkdown } from './lib/parser.mjs';
 import { analyzeGap, analyzeGapLlm } from './lib/gap-analyzer.mjs';
 import { testAiConnection, generateTailoredDocument } from './lib/tailor-engine.mjs';
-import { compileLatexToPdf } from './lib/latex-compiler.mjs';
 import { compileHtmlToPdf } from './lib/html-compiler.mjs';
 
 dotenv.config();
@@ -156,10 +155,10 @@ app.post('/api/test-connection', async (req, res) => {
   }
 });
 
-// Generate Tailored Application (LaTeX CV & Cover Letter + PDF Compilation)
+// Generate Tailored Application (HTML CV & Cover Letter + PDF Compilation)
 app.post('/api/generate-tailored', async (req, res) => {
   try {
-    const { masterCv, jobDescription, targetTitle, config, gapMode = 'zero-llm' } = req.body;
+    const { masterCv, jobDescription, targetTitle, config, gapMode = 'zero-llm', cvStyle = 'cloyola' } = req.body;
 
     if (!masterCv || !jobDescription) {
       return res.status(400).json({ error: 'Master CV and Job Description are required.' });
@@ -175,26 +174,27 @@ app.post('/api/generate-tailored', async (req, res) => {
     }
 
     // 2. Run AI Tailor Engine with computed gap matrix
-    const { applicationEmail, tailoredCvTex, coverLetterHtml } = await generateTailoredDocument({
+    const { applicationEmail, tailoredCvHtml, coverLetterHtml } = await generateTailoredDocument({
       masterCv,
       jobDescription,
       targetTitle,
       config,
-      gapReport
+      gapReport,
+      cvStyle
     });
 
-    // 3. Compile LaTeX to PDFs
-    const cvCompilation = await compileLatexToPdf(tailoredCvTex, 'cv');
+    // 3. Compile HTML to PDFs (both CV and Cover Letter use HTML->PDF)
+    const cvCompilation = await compileHtmlToPdf(tailoredCvHtml, 'cv');
     const coverCompilation = await compileHtmlToPdf(coverLetterHtml, 'cover');
 
     res.json({
       success: true,
       applicationEmail,
-      tailoredCvTex,
+      tailoredCvHtml,
       coverLetterHtml,
       cvPdfUrl: cvCompilation.pdfUrl,
       coverPdfUrl: coverCompilation.pdfUrl,
-      cvTexUrl: cvCompilation.texUrl,
+      cvHtmlUrl: cvCompilation.htmlUrl,
       coverHtmlUrl: coverCompilation.htmlUrl,
       gapAnalysis: gapReport
     });
@@ -204,7 +204,7 @@ app.post('/api/generate-tailored', async (req, res) => {
   }
 });
 
-// Recompile LaTeX preview
+// Recompile document preview (both CV and Cover Letter use HTML->PDF)
 app.post('/api/recompile', async (req, res) => {
   try {
     const { content, docType = 'cv' } = req.body;
@@ -213,26 +213,17 @@ app.post('/api/recompile', async (req, res) => {
       return res.status(400).json({ error: 'content is required.' });
     }
 
-    if (docType === 'cover') {
-      const compilation = await compileHtmlToPdf(content, docType);
-      return res.json({
-        success: true,
-        pdfUrl: compilation.pdfUrl,
-        htmlUrl: compilation.htmlUrl,
-        fileName: compilation.fileName
-      });
-    }
-
-    const compilation = await compileLatexToPdf(content, docType);
-    res.json({
+    // Both cv and cover use HTML compilation now
+    const compilation = await compileHtmlToPdf(content, docType);
+    return res.json({
       success: true,
       pdfUrl: compilation.pdfUrl,
-      texUrl: compilation.texUrl,
+      htmlUrl: compilation.htmlUrl,
       fileName: compilation.fileName
     });
   } catch (err) {
     console.error('Recompilation error:', err);
-    res.status(500).json({ error: err.message || 'Failed to recompile LaTeX document.' });
+    res.status(500).json({ error: err.message || 'Failed to recompile document.' });
   }
 });
 

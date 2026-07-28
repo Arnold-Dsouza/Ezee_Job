@@ -18,12 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
       baseUrl: localStorage.getItem('ai_base_url') || 'http://localhost:11434/v1/chat/completions'
     },
     applicationEmail: { subject: '', body: '' },
-    tailoredCvTex: '',
+    tailoredCvHtml: '',
     coverLetterHtml: '',
     cvPdfUrl: '',
     coverPdfUrl: '',
     gapAnalysis: null,
-    gapMode: 'zero-llm'
+    gapMode: localStorage.getItem('gap_mode') || 'zero-llm',
+    photoBase64: null,
+    photoMimeType: null
   };
 
   // --- DOM Elements ---
@@ -40,6 +42,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnAnalyzeGap = document.getElementById('btn-analyze-gap');
   const btnGenerateTailored = document.getElementById('btn-generate-tailored');
   const btnLoadSample = document.getElementById('btn-load-sample');
+  const cvStyleSelect = document.getElementById('cv-style-select');
+
+  // Extras Drawer
+  const btnOpenExtras = document.getElementById('btn-open-extras');
+  const btnCloseExtras = document.getElementById('btn-close-extras');
+  const extrasDrawer = document.getElementById('extras-drawer');
+  const extrasBackdrop = document.getElementById('extras-backdrop');
+  const ctaThemeName = document.getElementById('cta-theme-name');
+  const ctaPhotoPill = document.getElementById('cta-photo-pill');
+  const ctaChangeTheme = document.getElementById('cta-change-theme');
+  const ctaRemovePhotoQuick = document.getElementById('cta-remove-photo-quick');
+
+  // Photo elements
+  const photoFileInput = document.getElementById('photo-file-input');
+  const photoPreviewContainer = document.getElementById('photo-preview-container');
+  const photoUploadPrompt = document.getElementById('photo-upload-prompt');
+  const photoPreviewImg = document.getElementById('photo-preview-img');
+  const photoFileName = document.getElementById('photo-file-name');
+  const btnRemovePhoto = document.getElementById('btn-remove-photo');
 
   // Gap Analysis Elements
   const gapModeToggle = document.getElementById('gap-mode-toggle');
@@ -110,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadAiConfigToUI();
     fetchMasterCv();
     setupEventListeners();
+    restoreGapModeUI(); // Restore toggle state from localStorage
   }
 
   // --- AI Config Management ---
@@ -206,47 +228,89 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Drag and Drop
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('dragover');
-    });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        uploadFile(e.dataTransfer.files[0]);
-      }
-    });
-    dropZone.addEventListener('click', () => pdfUploadInput.click());
-
-    // Gap Analysis Mode Toggle
+    // Gap Analysis Mode Toggle — persists across reloads
     if (gapModeToggle) {
       gapModeToggle.addEventListener('change', (e) => {
         const isLlm = e.target.checked;
         state.gapMode = isLlm ? 'llm' : 'zero-llm';
-
-        if (isLlm) {
-          if (gapAnalysisTitle) gapAnalysisTitle.textContent = 'LLM-Driven Keyword Match & Gap Analysis';
-          if (labelZeroMode) labelZeroMode.classList.remove('active');
-          if (labelLlmMode) labelLlmMode.classList.add('active');
-          if (gapModeBanner) gapModeBanner.className = 'gap-mode-banner llm-mode';
-          if (gapModeBannerText) gapModeBannerText.innerHTML = '<strong>LLM-Driven Mode:</strong> AI semantic analysis identifying missing qualifications & strategic optimizations to fix Cover Letter, CV & Email.';
-        } else {
-          if (gapAnalysisTitle) gapAnalysisTitle.textContent = 'Zero-LLM Keyword Match & Gap Analysis';
-          if (labelZeroMode) labelZeroMode.classList.add('active');
-          if (labelLlmMode) labelLlmMode.classList.remove('active');
-          if (gapModeBanner) gapModeBanner.className = 'gap-mode-banner zero-mode';
-          if (gapModeBannerText) gapModeBannerText.innerHTML = '<strong>Zero-LLM Mode:</strong> Fast, deterministic NLP skill extraction without AI API cost or hallucination.';
-        }
-
-        // Re-run analysis if CV and JD are present
+        localStorage.setItem('gap_mode', state.gapMode);
+        applyGapModeUI(isLlm);
         if (masterCvInput.value.trim() && jdInput.value.trim()) {
           runGapAnalysis();
         }
       });
     }
+
+    // ─── Extras Drawer ────────────────────────────────────────────────────
+    function openExtras() {
+      if (extrasDrawer) extrasDrawer.classList.add('open');
+      if (extrasBackdrop) extrasBackdrop.style.display = 'block';
+      if (window.lucide) window.lucide.createIcons();
+    }
+    function closeExtras() {
+      if (extrasDrawer) extrasDrawer.classList.remove('open');
+      if (extrasBackdrop) extrasBackdrop.style.display = 'none';
+    }
+    if (btnOpenExtras) btnOpenExtras.addEventListener('click', openExtras);
+    if (btnCloseExtras) btnCloseExtras.addEventListener('click', closeExtras);
+    if (extrasBackdrop) extrasBackdrop.addEventListener('click', closeExtras);
+    if (ctaChangeTheme) ctaChangeTheme.addEventListener('click', openExtras);
+
+    // Theme card selection
+    document.querySelectorAll('.theme-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        const theme = card.dataset.theme;
+        const name = card.dataset.name;
+        if (cvStyleSelect) cvStyleSelect.value = theme;
+        if (ctaThemeName) ctaThemeName.textContent = name;
+        showNotification(`Theme: ${name}`, 'success');
+      });
+    });
+
+    // ─── Photo Upload ─────────────────────────────────────────────────────
+    if (photoFileInput) {
+      photoFileInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) { showNotification('Photo must be under 5MB.', 'error'); return; }
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          const dataUrl = evt.target.result;
+          const [meta, b64] = dataUrl.split(',');
+          state.photoBase64 = b64;
+          state.photoMimeType = meta.match(/data:([^;]+)/)[1];
+          if (photoPreviewImg) photoPreviewImg.src = dataUrl;
+          if (photoFileName) photoFileName.textContent = file.name;
+          if (photoPreviewContainer) photoPreviewContainer.style.display = 'flex';
+          if (photoUploadPrompt) photoUploadPrompt.style.display = 'none';
+          if (ctaPhotoPill) {
+            ctaPhotoPill.style.display = 'inline-flex';
+            const nameEl = document.getElementById('cta-photo-name');
+            if (nameEl) nameEl.textContent = file.name.length > 20 ? file.name.slice(0, 18) + '…' : file.name;
+          }
+          if (window.lucide) window.lucide.createIcons();
+          showNotification('Photo loaded — will be embedded in CV.', 'success');
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function removePhoto() {
+      state.photoBase64 = null;
+      state.photoMimeType = null;
+      if (photoPreviewImg) photoPreviewImg.src = '';
+      if (photoFileName) photoFileName.textContent = '';
+      if (photoPreviewContainer) photoPreviewContainer.style.display = 'none';
+      if (photoUploadPrompt) photoUploadPrompt.style.display = 'flex';
+      if (photoFileInput) photoFileInput.value = '';
+      if (ctaPhotoPill) ctaPhotoPill.style.display = 'none';
+      showNotification('Photo removed.', 'info');
+    }
+    if (btnRemovePhoto) btnRemovePhoto.addEventListener('click', removePhoto);
+    if (ctaRemovePhotoQuick) ctaRemovePhotoQuick.addEventListener('click', removePhoto);
+
 
     // Gap Analysis
     btnAnalyzeGap.addEventListener('click', runGapAnalysis);
@@ -275,11 +339,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    btnCopyCvTex.addEventListener('click', () => copyToClipboard(cvTexCode.value, 'CV LaTeX code copied!'));
+    btnCopyCvTex.addEventListener('click', () => copyToClipboard(cvTexCode.value, 'CV HTML code copied!'));
     btnCopyCoverTex.addEventListener('click', () => copyToClipboard(coverTexCode.value, 'Cover Letter HTML copied!'));
 
-    // Download .tex
-    btnDownloadCvTex.addEventListener('click', () => downloadTextFile('tailored-cv.tex', cvTexCode.value));
+    // Download .html
+    btnDownloadCvTex.addEventListener('click', () => downloadTextFile('tailored-cv.html', cvTexCode.value));
     btnDownloadCoverTex.addEventListener('click', () => downloadTextFile('cover-letter.html', coverTexCode.value));
 
     // Refresh Frames
@@ -325,8 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function uploadFile(file) {
     const formData = new FormData();
     formData.append('file', file);
-
-    dropZone.innerHTML = `<p>Uploading and parsing ${file.name}...</p>`;
+    showNotification(`Uploading ${file.name}...`, 'info');
 
     try {
       const res = await fetch('/api/upload-cv', {
@@ -336,17 +399,96 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       if (data.success) {
         masterCvInput.value = data.masterCv;
-        dropZone.innerHTML = `<i data-lucide="check-circle" class="drop-icon text-success"></i><p>Uploaded & Parsed <strong>${file.name}</strong></p>`;
-        if (window.lucide) window.lucide.createIcons();
         showNotification(`Parsed ${file.name} successfully!`, 'success');
       } else {
         throw new Error(data.error);
       }
     } catch (err) {
       showNotification(`Upload error: ${err.message}`, 'error');
-      dropZone.innerHTML = `<i data-lucide="file-up" class="drop-icon"></i><p>Drag & drop your Master CV (PDF/Markdown) or click to browse</p>`;
-      if (window.lucide) window.lucide.createIcons();
     }
+  }
+
+  // --- Gap Mode UI Helpers ---
+  function applyGapModeUI(isLlm) {
+    if (gapModeToggle) gapModeToggle.checked = isLlm;
+    if (isLlm) {
+      if (gapAnalysisTitle) gapAnalysisTitle.textContent = 'LLM-Driven Keyword Match & Gap Analysis';
+      if (labelZeroMode) labelZeroMode.classList.remove('active');
+      if (labelLlmMode) labelLlmMode.classList.add('active');
+      if (gapModeBanner) gapModeBanner.className = 'gap-mode-banner llm-mode';
+      if (gapModeBannerText) gapModeBannerText.innerHTML = '<strong>LLM-Driven Mode:</strong> AI semantic analysis identifying missing qualifications & strategic optimizations.';
+    } else {
+      if (gapAnalysisTitle) gapAnalysisTitle.textContent = 'Zero-LLM Keyword Match & Gap Analysis';
+      if (labelZeroMode) labelZeroMode.classList.add('active');
+      if (labelLlmMode) labelLlmMode.classList.remove('active');
+      if (gapModeBanner) gapModeBanner.className = 'gap-mode-banner zero-mode';
+      if (gapModeBannerText) gapModeBannerText.innerHTML = '<strong>Zero-LLM Mode:</strong> Fast, deterministic NLP skill extraction without AI API cost or hallucination.';
+    }
+  }
+
+  function restoreGapModeUI() {
+    const isLlm = state.gapMode === 'llm';
+    applyGapModeUI(isLlm);
+  }
+
+  // --- Photo Injection (client-side post-processing) ---
+  function injectPhotoIntoCV(htmlCode) {
+    if (!state.photoBase64 || !htmlCode) return htmlCode;
+    const dataUrl = `data:${state.photoMimeType};base64,${state.photoBase64}`;
+    const imgTag = `<img src="${dataUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" alt="Profile Photo">`;
+
+    // ── Sidebar layout detection ──────────────────────────────────────────
+    // The sidebar uses .photo-circle (and optionally id="cv-photo-placeholder")
+    // Try three increasingly broad strategies.
+    const hasSidebar = htmlCode.includes('photo-circle') || htmlCode.includes('cv-photo-placeholder') || htmlCode.includes('class="sidebar"') || htmlCode.includes("class='sidebar'");
+
+    if (hasSidebar) {
+      let result = htmlCode;
+
+      // Strategy 1: id="cv-photo-placeholder" (most reliable)
+      result = result.replace(
+        /(<div[^>]*id="cv-photo-placeholder"[^>]*>)([\s\S]*?)(<\/div>)/,
+        `$1${imgTag}$3`
+      );
+      // If strategy 1 matched, the imgTag is now in there
+      if (result.includes(dataUrl)) return result;
+
+      // Strategy 2: class="photo-circle" — any content inside
+      result = result.replace(
+        /(<div[^>]*class="photo-circle"[^>]*>)([\s\S]*?)(<\/div>)/,
+        `$1${imgTag}$3`
+      );
+      if (result.includes(dataUrl)) return result;
+
+      // Strategy 3: single-quote variant
+      result = result.replace(
+        /(<div[^>]*class='photo-circle'[^>]*>)([\s\S]*?)(<\/div>)/,
+        `$1${imgTag}$3`
+      );
+      if (result.includes(dataUrl)) return result;
+
+      // Strategy 4: find any div that contains the silhouette SVG and replace contents
+      result = result.replace(
+        /(<div[^>]*>)\s*(<svg[^>]*viewBox="0 0 100 100"[\s\S]*?<\/svg>)\s*(<\/div>)/,
+        `$1${imgTag}$3`
+      );
+      return result;
+    }
+
+    // ── Standard layout: inject photo on right of header ─────────────────
+    const photoStyle = 'width:82px;height:82px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.4);flex-shrink:0;';
+    const photoEl = `<img src="${dataUrl}" style="${photoStyle}" alt="Profile Photo">`;
+    const wrapCSS = `<style>.cv-photo-wrapper{display:flex!important;align-items:center!important;gap:12px!important;}.cv-photo-wrapper .cv-photo-inner{flex:1;min-width:0;}</style>`;
+
+    let result = htmlCode.replace(
+      /(<header[^>]*>)([\s\S]*?)(<\/header>)/,
+      (match, open, content, close) =>
+        `${open}<div class="cv-photo-wrapper"><div class="cv-photo-inner">${content}</div>${photoEl}</div>${close}`
+    );
+    if (result !== htmlCode) {
+      result = result.replace('</head>', `${wrapCSS}</head>`);
+    }
+    return result;
   }
 
   // --- Pipeline Status Controller ---
@@ -530,7 +672,8 @@ document.addEventListener('DOMContentLoaded', () => {
           jobDescription,
           targetTitle,
           config: state.aiConfig,
-          gapMode: state.gapMode
+          gapMode: state.gapMode,
+          cvStyle: cvStyleSelect ? cvStyleSelect.value : 'cloyola'
         })
       });
 
@@ -562,11 +705,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Stage 5: Validate and populate Tailored CV
-      if (data.tailoredCvTex) {
-        state.tailoredCvTex = data.tailoredCvTex;
-        cvTexCode.value = data.tailoredCvTex;
-        updatePipelineStep(5, 'completed', 'Stage 5: Tailored CV TeX generated ✓');
+      // Stage 5: Validate and populate Tailored CV HTML
+      if (data.tailoredCvHtml) {
+        const processedCvHtml = injectPhotoIntoCV(data.tailoredCvHtml);
+        state.tailoredCvHtml = processedCvHtml;
+        cvTexCode.value = processedCvHtml;
+        updatePipelineStep(5, 'completed', 'Stage 5: Tailored CV HTML generated ✓');
         if (cvBadge) {
           cvBadge.classList.add('badge-success');
           cvBadge.textContent = 'Ready ✓';
@@ -608,7 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showNotification(`Generation failed: ${err.message}`, 'error');
       if (!state.applicationEmail.subject && emailBadge) { emailBadge.classList.remove('badge-success'); emailBadge.textContent = 'Pending'; }
       if (!state.coverLetterHtml && coverBadge) { coverBadge.classList.remove('badge-success'); coverBadge.textContent = 'Pending'; }
-      if (!state.tailoredCvTex && cvBadge) { cvBadge.classList.remove('badge-success'); cvBadge.textContent = 'Pending'; }
+      if (!state.tailoredCvHtml && cvBadge) { cvBadge.classList.remove('badge-success'); cvBadge.textContent = 'Pending'; }
       if (pipelineElements.statusBadge) pipelineElements.statusBadge.className = 'pipeline-badge status-idle';
       if (pipelineElements.statusText) pipelineElements.statusText.textContent = 'Pipeline Interrupted';
     } finally {

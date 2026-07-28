@@ -56,7 +56,7 @@
       </button>
       <button class="nav-tab" data-tab="cv-editor-tab" id="tab-cv-btn">
         <i data-lucide="code-2"></i>
-        <span>4. Tailored CV (.tex)</span>
+        <span>4. Tailored CV (.html)</span>
         <span id="cv-badge" class="badge-mini">Ready</span>
       </button>
     </nav>
@@ -80,16 +80,13 @@
                   <i data-lucide="upload-cloud"></i> Upload PDF
                 </label>
                 <input type="file" id="pdf-upload-input" accept=".pdf,.txt,.md" style="display: none;">
+                <button id="btn-open-extras" class="btn btn-secondary btn-xs" title="CV Theme & Photo options">
+                  <i data-lucide="sliders-horizontal"></i> Extras
+                </button>
                 <button id="btn-save-master-cv" class="btn btn-secondary btn-xs" title="Save Master CV">
                   <i data-lucide="save"></i> Save
                 </button>
               </div>
-            </div>
-
-            <!-- Drag and Drop Zone -->
-            <div id="drop-zone" class="drop-zone">
-              <i data-lucide="file-up" class="drop-icon"></i>
-              <p>Drag & drop your Master CV (PDF/Markdown) or click to browse</p>
             </div>
 
             <div class="editor-wrapper">
@@ -122,9 +119,29 @@
 
             <!-- Primary Tailor CTA Button -->
             <div class="cta-banner">
+              <!-- Hidden select kept for state management -->
+              <select id="cv-style-select" style="display:none;">
+                <option value="cloyola">Cloyola Grey</option>
+                <option value="josylad_blue">Modern Blue</option>
+                <option value="josylad_grey">Modern Grey</option>
+                <option value="samodum_bold">Clean Bold</option>
+                <option value="krishnavalliappan">Classic ATS</option>
+                <option value="sidebar_dark">Sidebar Dark</option>
+                <option value="sidebar_light">Sidebar Light</option>
+              </select>
+              <div class="cta-theme-pill" id="cta-theme-pill">
+                <i data-lucide="palette" style="width:13px;height:13px;"></i>
+                <span id="cta-theme-name">Cloyola Grey</span>
+                <button id="cta-change-theme" class="cta-pill-btn">Change</button>
+              </div>
+              <div id="cta-photo-pill" class="cta-theme-pill" style="display:none;">
+                <i data-lucide="user-circle" style="width:13px;height:13px;"></i>
+                <span id="cta-photo-name">Photo added</span>
+                <button id="cta-remove-photo-quick" class="cta-pill-btn">Remove</button>
+              </div>
               <button id="btn-generate-tailored" class="btn btn-primary btn-lg btn-block">
                 <i data-lucide="sparkles"></i>
-                <span>Generate Tailored CV & Cover Letter</span>
+                <span>Generate Tailored CV &amp; Cover Letter</span>
               </button>
             </div>
 
@@ -313,9 +330,9 @@
             <div class="split-pane pane-code">
               <div class="pane-header">
                 <span>Source Code</span>
-                <span class="code-lang">CV</span>
+                <span class="code-lang">HTML CV</span>
               </div>
-              <textarea id="cv-tex-code" class="code-editor" spellcheck="false" placeholder="% Generated LaTeX code will appear here..."></textarea>
+              <textarea id="cv-tex-code" class="code-editor" spellcheck="false" placeholder="<!-- Generated HTML CV code will appear here..."></textarea>
             </div>
 
             <!-- Resizer divider -->
@@ -338,7 +355,7 @@
                 <iframe id="cv-pdf-frame" src="about:blank" title="CV PDF Preview"></iframe>
                 <div id="cv-loading-overlay" class="loading-overlay" style="display: none;">
                   <div class="spinner"></div>
-                  <p>Compiling LaTeX to PDF on server...</p>
+                  <p>Compiling HTML CV to PDF on server...</p>
                 </div>
               </div>
             </div>
@@ -521,6 +538,122 @@
     </div>
 
   </div>
+
+  <!-- ─── EXTRAS DRAWER ─── -->
+  <div id="extras-backdrop" class="extras-backdrop" style="display:none;"></div>
+  <aside id="extras-drawer" class="extras-drawer" aria-hidden="true">
+    <div class="extras-drawer-header">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <i data-lucide="sliders-horizontal" style="width:18px;height:18px;color:var(--accent);"></i>
+        <h3 style="margin:0;font-size:1rem;font-weight:700;">Generation Extras</h3>
+      </div>
+      <button id="btn-close-extras" class="btn btn-icon" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+
+    <div class="extras-section">
+      <div class="extras-section-title"><i data-lucide="palette" style="width:15px;height:15px;"></i><span>CV Theme</span></div>
+      <p class="extras-hint">Click a card to select the theme. It will be used when you generate.</p>
+      <div class="theme-grid" id="theme-grid">
+        <div class="theme-group-label">Standard Layouts</div>
+
+        <div class="theme-card active" data-theme="cloyola" data-name="Cloyola Grey">
+          <div class="tp"><div class="tp-header-bar"></div><div class="tp-body"><div class="tp-line w80"></div><div class="tp-line w60"></div><div class="tp-card"><div class="tp-line w90"></div><div class="tp-line w70"></div><div class="tp-line w55"></div></div><div class="tp-card"><div class="tp-line w85"></div><div class="tp-line w65"></div></div></div></div>
+          <span class="theme-card-label">Cloyola Grey</span><span class="theme-card-sub">Roboto</span>
+        </div>
+        <div class="theme-card" data-theme="josylad_blue" data-name="Modern Blue">
+          <div class="tp"><div class="tp-header-bar blue"></div><div class="tp-body"><div class="tp-line w80"></div><div class="tp-line w60"></div><div class="tp-card blue-border"><div class="tp-line w90"></div><div class="tp-line w70"></div></div><div class="tp-card blue-border"><div class="tp-line w85"></div><div class="tp-line w65"></div></div></div></div>
+          <span class="theme-card-label">Modern Blue</span><span class="theme-card-sub">Poppins</span>
+        </div>
+        <div class="theme-card" data-theme="josylad_grey" data-name="Modern Grey">
+          <div class="tp"><div class="tp-header-bar dark"></div><div class="tp-body"><div class="tp-line w80"></div><div class="tp-line w60"></div><div class="tp-card dark-border"><div class="tp-line w90"></div><div class="tp-line w70"></div></div><div class="tp-card dark-border"><div class="tp-line w85"></div><div class="tp-line w65"></div></div></div></div>
+          <span class="theme-card-label">Modern Grey</span><span class="theme-card-sub">Poppins</span>
+        </div>
+        <div class="theme-card" data-theme="samodum_bold" data-name="Clean Bold">
+          <div class="tp"><div class="tp-body" style="padding:4px;"><div class="tp-line w50 blue" style="height:5px;"></div><div class="tp-divider blue"></div><div class="tp-two-col"><div class="tp-col-left"><div class="tp-line w90 tiny"></div><div class="tp-line w70 tiny"></div></div><div class="tp-col-right"><div class="tp-line w90 tiny"></div><div class="tp-line w80 tiny"></div></div></div><div class="tp-divider blue"></div><div class="tp-two-col"><div class="tp-col-left"><div class="tp-line w90 tiny"></div></div><div class="tp-col-right"><div class="tp-line w80 tiny"></div></div></div></div></div>
+          <span class="theme-card-label">Clean Bold</span><span class="theme-card-sub">Josefin Sans</span>
+        </div>
+        <div class="theme-card" data-theme="krishnavalliappan" data-name="Classic ATS">
+          <div class="tp"><div class="tp-body" style="padding:5px;align-items:center;"><div class="tp-line w60" style="align-self:center;"></div><div class="tp-line w40 tiny" style="align-self:center;"></div><div class="tp-divider dark"></div><div class="tp-line w80"></div><div class="tp-line w70"></div><div class="tp-divider dark"></div><div class="tp-line w90"></div><div class="tp-line w60"></div></div></div>
+          <span class="theme-card-label">Classic ATS</span><span class="theme-card-sub">Arial</span>
+        </div>
+
+        <div class="theme-group-label">Sidebar + Photo &#128248;</div>
+        <div class="theme-card" data-theme="sidebar_dark" data-name="Sidebar Dark Navy">
+          <div class="tp" style="flex-direction:row;padding:0;"><div class="tp-sidebar dark-sidebar"><div class="tp-avatar-circle"></div><div class="tp-line w80 light tiny"></div><div class="tp-line w60 light tiny"></div><div class="tp-divider light-dim"></div><div class="tp-line w90 light tiny"></div><div class="tp-line w75 light tiny"></div></div><div class="tp-main-area"><div class="tp-line w90 dark-text"></div><div class="tp-line w70 dark-text tiny"></div><div class="tp-divider dark-dim"></div><div class="tp-line w85 dark-text tiny"></div><div class="tp-line w65 dark-text tiny"></div></div></div>
+          <span class="theme-card-label">Sidebar Dark Navy</span><span class="theme-card-sub">Nunito + Photo</span>
+        </div>
+        <div class="theme-card" data-theme="sidebar_light" data-name="Sidebar Light Blue">
+          <div class="tp" style="flex-direction:row;padding:0;"><div class="tp-sidebar light-sidebar"><div class="tp-avatar-circle" style="border:2px solid #1d4ed8;background:#9ca3af;"></div><div class="tp-line w80 dark-text tiny"></div><div class="tp-line w60 dark-text tiny"></div><div class="tp-divider blue-dim"></div><div class="tp-line w90 blue tiny"></div><div class="tp-line w75 dark-text tiny"></div></div><div class="tp-main-area"><div class="tp-line w90 dark-text"></div><div class="tp-line w70 blue tiny"></div><div class="tp-divider blue-dim"></div><div class="tp-line w85 dark-text tiny"></div></div></div>
+          <span class="theme-card-label">Sidebar Light Blue</span><span class="theme-card-sub">Lato + Photo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="extras-section">
+      <div class="extras-section-title"><i data-lucide="camera" style="width:15px;height:15px;"></i><span>Profile Photo</span></div>
+      <p class="extras-hint">Embedded in your CV on generation. Sidebar themes: circular avatar. Standard themes: appears beside your name.</p>
+      <div class="photo-upload-area" id="photo-upload-area">
+        <div id="photo-preview-container" class="photo-preview-container" style="display:none;">
+          <img id="photo-preview-img" src="" alt="Profile Photo" class="photo-preview-img">
+          <div class="photo-preview-meta">
+            <span id="photo-file-name" class="photo-file-name"></span>
+            <button id="btn-remove-photo" class="btn btn-xs btn-secondary" style="color:#ef4444;"><i data-lucide="trash-2" style="width:12px;height:12px;"></i> Remove</button>
+          </div>
+        </div>
+        <div id="photo-upload-prompt" class="photo-upload-prompt">
+          <i data-lucide="image-plus" style="width:30px;height:30px;color:var(--accent);opacity:0.6;"></i>
+          <p style="margin:6px 0 10px;font-size:0.8rem;color:var(--text-muted);">JPG, PNG or WebP &middot; max 5MB</p>
+          <label for="photo-file-input" class="btn btn-secondary btn-sm"><i data-lucide="upload" style="width:14px;height:14px;"></i> Choose Photo</label>
+          <input type="file" id="photo-file-input" accept="image/jpeg,image/png,image/webp" style="display:none;">
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <style>
+  .extras-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1199;backdrop-filter:blur(2px);}
+  .extras-drawer{position:fixed;top:0;right:-440px;width:420px;max-width:95vw;height:100vh;background:var(--bg-card,#1a1f2e);border-left:1px solid var(--border,rgba(255,255,255,0.08));z-index:1200;display:flex;flex-direction:column;transition:right 0.3s cubic-bezier(0.32,0.72,0,1);overflow-y:auto;box-shadow:-8px 0 40px rgba(0,0,0,0.4);}
+  .extras-drawer.open{right:0;}
+  .extras-drawer-header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px 14px;border-bottom:1px solid var(--border,rgba(255,255,255,0.08));position:sticky;top:0;background:var(--bg-card,#1a1f2e);z-index:1;}
+  .extras-section{padding:16px 20px;border-bottom:1px solid var(--border,rgba(255,255,255,0.06));}
+  .extras-section:last-child{border-bottom:none;}
+  .extras-section-title{display:flex;align-items:center;gap:7px;font-size:0.77rem;font-weight:700;color:var(--accent,#818cf8);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.6px;}
+  .extras-hint{font-size:0.72rem;color:var(--text-muted,#6b7280);line-height:1.45;margin-bottom:12px;}
+  .cta-theme-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.25);border-radius:20px;padding:4px 8px 4px 10px;font-size:0.72rem;color:var(--text-secondary,#9ca3af);margin-bottom:8px;}
+  .cta-pill-btn{background:rgba(129,140,248,0.2);border:none;border-radius:12px;padding:2px 8px;font-size:0.68rem;color:var(--accent,#818cf8);cursor:pointer;margin-left:4px;font-weight:600;}
+  .cta-pill-btn:hover{background:rgba(129,140,248,0.35);}
+  .theme-group-label{grid-column:1/-1;font-size:0.67rem;font-weight:700;color:var(--text-muted,#6b7280);text-transform:uppercase;letter-spacing:0.7px;padding:6px 0 4px;border-bottom:1px solid var(--border,rgba(255,255,255,0.06));}
+  .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .theme-card{cursor:pointer;border-radius:10px;border:2px solid var(--border,rgba(255,255,255,0.1));overflow:hidden;transition:all 0.2s;background:var(--bg-secondary,#131825);}
+  .theme-card:hover{border-color:rgba(129,140,248,0.5);transform:translateY(-2px);box-shadow:0 4px 16px rgba(129,140,248,0.15);}
+  .theme-card.active{border-color:var(--accent,#818cf8);box-shadow:0 0 0 3px rgba(129,140,248,0.2);}
+  .theme-card-label{display:block;font-size:0.7rem;font-weight:700;color:var(--text-primary,#e2e8f0);padding:4px 6px 0;text-align:center;}
+  .theme-card-sub{display:block;font-size:0.63rem;color:var(--text-muted,#6b7280);text-align:center;padding-bottom:6px;}
+  .tp{width:100%;height:84px;overflow:hidden;padding:5px;display:flex;flex-direction:column;gap:2px;background:#f9fafb;}
+  .tp-header-bar{height:14px;border-radius:2px;background:#9ca3af;margin-bottom:2px;flex-shrink:0;}
+  .tp-header-bar.blue{background:#3498db;}.tp-header-bar.dark{background:#4a4a4a;}
+  .tp-body{display:flex;flex-direction:column;gap:2px;flex:1;}
+  .tp-line{height:4px;border-radius:2px;background:#d1d5db;flex-shrink:0;}
+  .tp-line.tiny{height:3px;}
+  .w90{width:90%}.w85{width:85%}.w80{width:80%}.w75{width:75%}.w70{width:70%}.w65{width:65%}.w60{width:60%}.w55{width:55%}.w50{width:50%}.w40{width:40%}
+  .tp-line.blue{background:#3498db;}.tp-line.dark-text{background:#374151;}.tp-line.light{background:rgba(255,255,255,0.65);}.tp-line.light-dim{background:rgba(255,255,255,0.2);}
+  .tp-card{border-radius:2px;padding:2px 3px;display:flex;flex-direction:column;gap:1.5px;background:#f3f4f6;margin-top:1px;flex-shrink:0;}
+  .tp-card.blue-border{border-left:2px solid #3498db;}.tp-card.dark-border{border-left:2px solid #4a4a4a;}
+  .tp-divider{height:1px;background:#e5e7eb;margin:2px 0;flex-shrink:0;}
+  .tp-divider.blue{background:#3498db;}.tp-divider.dark{background:#4a4a4a;}.tp-divider.dark-dim{background:rgba(27,42,74,0.3);}.tp-divider.light-dim{background:rgba(255,255,255,0.15);}.tp-divider.blue-dim{background:rgba(29,78,216,0.3);}
+  .tp-two-col{display:flex;gap:4px;flex:1;min-height:0;}
+  .tp-col-left{width:28%;display:flex;flex-direction:column;gap:1.5px;}.tp-col-right{flex:1;display:flex;flex-direction:column;gap:1.5px;}
+  .tp-sidebar{width:33%;padding:4px 3px;display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;}
+  .dark-sidebar{background:#1b2a4a;}.light-sidebar{background:#eef2f8;border-right:2px solid #1d4ed8;}
+  .tp-main-area{flex:1;background:#fff;padding:5px 4px;display:flex;flex-direction:column;gap:2px;}
+  .tp-avatar-circle{width:18px;height:18px;border-radius:50%;background:#6b7280;margin-bottom:2px;flex-shrink:0;}
+  .photo-upload-area{border:2px dashed var(--border,rgba(255,255,255,0.15));border-radius:10px;overflow:hidden;}
+  .photo-upload-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 16px;text-align:center;}
+  .photo-preview-container{display:flex;align-items:center;gap:12px;padding:12px;}
+  .photo-preview-img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--accent,#818cf8);flex-shrink:0;}
+  .photo-preview-meta{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;}
+  .photo-file-name{font-size:0.72rem;color:var(--text-secondary,#9ca3af);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  </style>
 
   <script src="app.js"></script>
 </body>
