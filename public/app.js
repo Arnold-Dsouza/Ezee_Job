@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     aiConfig: {
       provider: localStorage.getItem('ai_provider') || 'gemini',
       apiKey: localStorage.getItem('ai_api_key') || '',
-      model: localStorage.getItem('ai_model') || 'gemini-2.0-flash',
+      model: localStorage.getItem('ai_model') || 'gemini-2.5-flash',
       baseUrl: localStorage.getItem('ai_base_url') || 'http://localhost:11434/v1/chat/completions'
     },
     applicationEmail: { subject: '', body: '' },
@@ -549,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pipelineElements.percentText) pipelineElements.percentText.textContent = '100%';
     if (pipelineElements.progressFill) pipelineElements.progressFill.style.width = '100%';
     if (pipelineElements.currentAction) pipelineElements.currentAction.textContent = summaryMsg || 'All 6 pipeline stages finished successfully!';
-    
+
     if (pipelineElements.statusBadge) {
       pipelineElements.statusBadge.className = 'pipeline-badge status-success';
     }
@@ -650,7 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lock UI and show spinners
     btnGenerateTailored.disabled = true;
     btnGenerateTailored.innerHTML = `<span class="spinner" style="width:16px;height:16px;border-width:2px;"></span> Processing AI Pipeline...`;
-    
+
     cvLoadingOverlay.style.display = 'flex';
     coverLoadingOverlay.style.display = 'flex';
 
@@ -721,7 +721,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.cvPdfUrl && data.coverPdfUrl) {
         state.cvPdfUrl = data.cvPdfUrl;
         state.coverPdfUrl = data.coverPdfUrl;
-        
+
         const timeStamp = Date.now();
         cvPdfFrame.src = `${data.cvPdfUrl}?t=${timeStamp}`;
         coverPdfFrame.src = `${data.coverPdfUrl}?t=${timeStamp}`;
@@ -886,14 +886,14 @@ alex@rivera.dev | +1 (555) 012-3456`;
     // Apple Toast HUD
     const toast = document.createElement('div');
     toast.className = `apple-toast-hud ${type}`;
-    
+
     let iconSvg = '<i data-lucide="info" style="width: 18px; height: 18px; color: #a5b4fc;"></i>';
     if (type === 'success') {
       iconSvg = '<i data-lucide="check-circle-2" style="width: 18px; height: 18px; color: #30d158;"></i>';
     } else if (type === 'error') {
       iconSvg = '<i data-lucide="alert-circle" style="width: 18px; height: 18px; color: #ff453a;"></i>';
     }
-    
+
     toast.innerHTML = `${iconSvg}<span>${escapeHtml(msg)}</span>`;
     document.body.appendChild(toast);
 

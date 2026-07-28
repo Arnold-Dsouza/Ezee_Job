@@ -21,8 +21,8 @@
     <header class="app-header">
       <div class="header-left">
         <div class="logo-box">
-          <span class="logo-tex">T<sub class="tex-e">E</sub>X</span>
-          <span class="logo-title">Ezee Job</span>
+          <span style="font-size: 1.5rem;" class="logo-tex">E<sub class="tex-e">z</sub>ee</span>
+          <span class="logo-title">Job📝</span>
         </div>
       </div>
 
@@ -60,7 +60,7 @@
       </button>
       <button class="nav-tab" data-tab="cv-editor-tab" id="tab-cv-btn">
         <i data-lucide="code-2"></i>
-        <span>4. Tailored CV (.html)</span>
+        <span>4. Tailored CV</span>
         <span id="cv-badge" class="badge-mini">Ready</span>
       </button>
     </nav>
@@ -114,8 +114,7 @@
 
             <div class="form-group-inline">
               <label for="target-title-input">Target Job Title:</label>
-              <input type="text" id="target-title-input" placeholder="e.g. Senior Full-Stack Engineer"
-                value="Senior Full-Stack Engineer">
+              <input type="text" id="target-title-input" placeholder="e.g. Senior Full-Stack Engineer" value="">
             </div>
 
             <div class="editor-wrapper">
@@ -279,7 +278,7 @@
               <div class="pipeline-step-item" id="p-step-5" data-step="5">
                 <div class="step-icon"><i data-lucide="code-2"></i></div>
                 <div class="step-content">
-                  <span class="step-name">5. Tailored CV (.html)</span>
+                  <span class="step-name">5. Tailored CV</span>
                   <span class="step-state text-muted" id="p-step-5-state">Pending</span>
                 </div>
               </div>
@@ -339,7 +338,7 @@
             <div class="split-pane pane-code">
               <div class="pane-header">
                 <span>Source Code</span>
-                <span class="code-lang">HTML CV</span>
+                <span class="code-lang">CV</span>
               </div>
               <textarea id="cv-tex-code" class="code-editor" spellcheck="false"
                 placeholder="<!-- Generated HTML CV code will appear here..."></textarea>
@@ -400,8 +399,7 @@
           <div class="email-subject-box">
             <label for="email-subject-input"><i data-lucide="tag"></i> Subject Line:</label>
             <input type="text" id="email-subject-input" class="form-control"
-              placeholder="Email subject will be generated here..."
-              value="Application for Senior Full-Stack Engineer - Alex Rivera">
+              placeholder="Email subject will be generated here..." value="">
           </div>
 
           <div class="editor-wrapper email-body-wrapper">
@@ -463,7 +461,7 @@
                 <span class="code-lang">Cover Letter</span>
               </div>
               <textarea id="cover-tex-code" class="code-editor" spellcheck="false"
-                placeholder="% Generated Cover Letter LaTeX code will appear here..."></textarea>
+                placeholder="% Generated Cover Letter code will appear here..."></textarea>
             </div>
 
             <!-- Resizer divider -->
@@ -487,7 +485,7 @@
                 <iframe id="cover-pdf-frame" src="about:blank" title="Cover Letter PDF Preview"></iframe>
                 <div id="cover-loading-overlay" class="loading-overlay" style="display: none;">
                   <div class="spinner"></div>
-                  <p>Compiling Cover Letter LaTeX to PDF...</p>
+                  <p>Compiling Cover Letter HTML to PDF...</p>
                 </div>
               </div>
             </div>
