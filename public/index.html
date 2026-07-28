@@ -27,13 +27,17 @@
       </div>
 
       <div class="header-actions">
+        <button id="btn-open-feedback" class="btn btn-secondary btn-sm" title="Send Feedback">
+          <i data-lucide="message-square"></i>
+          <span>Feedback</span>
+        </button>
         <button id="btn-load-sample" class="btn btn-secondary btn-sm" title="Load realistic sample CV & JD">
           <i data-lucide="file-spread"></i>
           <span>Load Sample Data</span>
         </button>
         <button id="btn-open-settings" class="btn btn-secondary btn-sm">
           <i data-lucide="settings"></i>
-          <span>AI Settings</span>
+          <span>Settings</span>
         </button>
         <div id="ai-status-badge" class="status-badge" title="Active AI Provider">
           <span class="status-dot"></span>
@@ -516,13 +520,17 @@
               <option value="openai">OpenAI (GPT-4o, GPT-4o-mini)</option>
               <option value="custom">Custom Local Endpoint (Ollama / LM Studio)</option>
             </select>
+            <small class="form-help" style="color: #ff0000; margin-top: 5px; display: block;">
+              <i data-lucide="info" style="width: 14px; height: 14px; vertical-align: middle;"></i>
+              <strong>Note:</strong> Tested primarily on OpenRouter and works exceptionally well with the Gemma4:free
+              model.
+            </small>
           </div>
 
           <div class="form-group" id="api-key-group">
             <label for="api-key-input">API Key:</label>
             <div class="input-with-button">
-              <input type="password" id="api-key-input" class="form-control"
-                placeholder="Enter API Key (or leave empty if env key is set)">
+              <input type="password" id="api-key-input" class="form-control" placeholder="Enter API Key">
               <button id="btn-toggle-key-visibility" class="btn btn-secondary btn-sm" type="button">Show</button>
             </div>
             <small class="form-help">Keys are saved locally in your browser session and used securely
@@ -554,6 +562,50 @@
             <i data-lucide="check"></i> Save Settings
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="modal-backdrop" style="display: none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i data-lucide="message-square"></i>
+            <h3>Send Feedback</h3>
+          </div>
+          <button id="btn-close-feedback" class="btn-close">&times;</button>
+        </div>
+
+        <form action="https://formsubmit.co/testjuly1998@gmail.com" method="POST">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="feedback-name">Your Name:</label>
+              <input type="text" id="feedback-name" name="name" class="form-control" required placeholder="John Doe">
+            </div>
+            
+            <div class="form-group">
+              <label for="feedback-email">Your Email:</label>
+              <input type="email" id="feedback-email" name="email" class="form-control" required placeholder="john@example.com">
+            </div>
+
+            <!-- Optional: Subject and Message body to make it a real feedback form -->
+            <div class="form-group">
+              <label for="feedback-message">Feedback:</label>
+              <textarea id="feedback-message" name="message" class="form-control" rows="4" required placeholder="Tell us what you think..."></textarea>
+            </div>
+            
+            <!-- Anti-spam honeypot for FormSubmit -->
+            <input type="text" name="_honey" style="display:none">
+            <!-- Disable FormSubmit captcha for smoother UX -->
+            <input type="hidden" name="_captcha" value="false">
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" id="btn-submit-feedback" class="btn btn-primary">
+              <i data-lucide="send"></i> Send Feedback
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 

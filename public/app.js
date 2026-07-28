@@ -124,6 +124,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const connectionStatusMsg = document.getElementById('connection-status-msg');
   const aiProviderLabel = document.getElementById('ai-provider-label');
 
+  // Feedback Modal Elements
+  const btnOpenFeedback = document.getElementById('btn-open-feedback');
+  const btnCloseFeedback = document.getElementById('btn-close-feedback');
+  const feedbackModal = document.getElementById('feedback-modal');
+
   // --- Initialize App ---
   init();
 
@@ -203,6 +208,11 @@ document.addEventListener('DOMContentLoaded', () => {
     navTabs.forEach(tab => {
       tab.addEventListener('click', () => switchTab(tab.dataset.tab));
     });
+
+    // Feedback Modal
+    if (btnOpenFeedback) btnOpenFeedback.addEventListener('click', () => { feedbackModal.style.display = 'flex'; });
+    if (btnCloseFeedback) btnCloseFeedback.addEventListener('click', () => { feedbackModal.style.display = 'none'; });
+    if (feedbackModal) feedbackModal.addEventListener('click', (e) => { if (e.target === feedbackModal) feedbackModal.style.display = 'none'; });
 
     // Save Master CV
     btnSaveMasterCv.addEventListener('click', async () => {
