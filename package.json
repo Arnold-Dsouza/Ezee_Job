@@ -22,12 +22,12 @@
     "motion": "^12.23.24",
     "multer": "^2.2.0",
     "node-latex": "^3.1.0",
-    "pdf-parse": "^2.4.5",
-    "pdfjs-dist": "^4.10.38",
+    "unpdf": "^0.14.0",
     "pdfkit": "^0.19.1",
     "puppeteer-core": "^25.3.0",
     "react": "^19.0.1",
-    "react-dom": "^19.0.1"
+    "react-dom": "^19.0.1",
+    "unpdf": "^1.8.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
