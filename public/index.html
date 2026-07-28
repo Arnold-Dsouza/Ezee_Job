@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,15 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
   <div class="app-container">
-    
+
     <!-- Top Header Navigation -->
     <header class="app-header">
       <div class="header-left">
@@ -42,7 +46,7 @@
     <nav class="nav-tabs">
       <button class="nav-tab active" data-tab="input-tab">
         <i data-lucide="file-text"></i>
-        <span>1. Master CV & JD</span>
+        <span>1. CV & JD</span>
       </button>
       <button class="nav-tab" data-tab="email-editor-tab" id="tab-email-btn">
         <i data-lucide="mail"></i>
@@ -73,7 +77,7 @@
             <div class="panel-header">
               <div class="panel-title">
                 <i data-lucide="user-check"></i>
-                <h2>Master CV / Resume</h2>
+                <h2>CV / Resume</h2>
               </div>
               <div class="panel-actions">
                 <label for="pdf-upload-input" class="btn btn-secondary btn-xs" title="Upload PDF or Text file">
@@ -90,7 +94,7 @@
             </div>
 
             <div class="editor-wrapper">
-              <textarea id="master-cv-input" placeholder="Paste your Master CV in Markdown or plain text here..."></textarea>
+              <textarea id="master-cv-input" placeholder="Paste your CV in Markdown or plain text here..."></textarea>
             </div>
           </div>
 
@@ -110,7 +114,8 @@
 
             <div class="form-group-inline">
               <label for="target-title-input">Target Job Title:</label>
-              <input type="text" id="target-title-input" placeholder="e.g. Senior Full-Stack Engineer" value="Senior Full-Stack Engineer">
+              <input type="text" id="target-title-input" placeholder="e.g. Senior Full-Stack Engineer"
+                value="Senior Full-Stack Engineer">
             </div>
 
             <div class="editor-wrapper">
@@ -159,7 +164,8 @@
 
             <div class="gap-header-controls">
               <!-- Mode Toggle Switch -->
-              <div class="gap-toggle-container" title="Toggle between Zero-LLM algorithmic matching and AI LLM-Driven semantic analysis">
+              <div class="gap-toggle-container"
+                title="Toggle between Zero-LLM algorithmic matching and AI LLM-Driven semantic analysis">
                 <span id="label-zero-mode" class="toggle-mode-text active">Zero-LLM</span>
                 <label class="switch-toggle">
                   <input type="checkbox" id="gap-mode-toggle">
@@ -175,7 +181,8 @@
           <!-- Description Banner for active Mode -->
           <div id="gap-mode-banner" class="gap-mode-banner zero-mode">
             <i data-lucide="zap" class="banner-icon"></i>
-            <span id="gap-mode-banner-text"><strong>Zero-LLM Mode:</strong> Fast, deterministic NLP skill extraction without AI API cost or hallucination.</span>
+            <span id="gap-mode-banner-text"><strong>Zero-LLM Mode:</strong> Fast, deterministic NLP skill extraction
+              without AI API cost or hallucination.</span>
           </div>
 
           <div class="gap-content-grid">
@@ -184,7 +191,8 @@
               <div class="radial-progress-wrapper">
                 <svg class="radial-svg" viewBox="0 0 100 100">
                   <circle class="radial-bg" cx="50" cy="50" r="40"></circle>
-                  <circle id="radial-progress-bar" class="radial-bar" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                  <circle id="radial-progress-bar" class="radial-bar" cx="50" cy="50" r="40" stroke-dasharray="251.2"
+                    stroke-dashoffset="251.2"></circle>
                 </svg>
                 <div class="radial-text">
                   <span id="radial-score-value">0%</span>
@@ -293,7 +301,7 @@
       <!-- SECTION 2: Overleaf-Style Split Editor - Tailored CV -->
       <section id="cv-editor-tab" class="tab-page">
         <div class="split-editor-container" id="cv-split-container">
-          
+
           <!-- Editor Toolbar -->
           <div class="editor-toolbar">
             <div class="doc-title-info">
@@ -318,7 +326,8 @@
               <a id="btn-download-cv-pdf" href="#" download class="btn btn-primary btn-sm" title="Download PDF file">
                 <i data-lucide="download"></i> Download PDF
               </a>
-              <button class="btn btn-icon btn-secondary toggle-fullscreen-btn" data-target="cv-split-container" title="Toggle Fullscreen">
+              <button class="btn btn-icon btn-secondary toggle-fullscreen-btn" data-target="cv-split-container"
+                title="Toggle Fullscreen">
                 <i data-lucide="maximize-2"></i>
               </button>
             </div>
@@ -332,7 +341,8 @@
                 <span>Source Code</span>
                 <span class="code-lang">HTML CV</span>
               </div>
-              <textarea id="cv-tex-code" class="code-editor" spellcheck="false" placeholder="<!-- Generated HTML CV code will appear here..."></textarea>
+              <textarea id="cv-tex-code" class="code-editor" spellcheck="false"
+                placeholder="<!-- Generated HTML CV code will appear here..."></textarea>
             </div>
 
             <!-- Resizer divider -->
@@ -346,7 +356,8 @@
                   <button id="btn-refresh-cv-frame" class="btn btn-xs btn-secondary" title="Refresh frame">
                     <i data-lucide="rotate-cw"></i> Refresh Frame
                   </button>
-                  <a id="btn-open-cv-pdf-tab" href="#" target="_blank" class="btn btn-xs btn-secondary" title="Open PDF in new tab">
+                  <a id="btn-open-cv-pdf-tab" href="#" target="_blank" class="btn btn-xs btn-secondary"
+                    title="Open PDF in new tab">
                     <i data-lucide="external-link"></i> New Tab
                   </a>
                 </div>
@@ -388,7 +399,9 @@
 
           <div class="email-subject-box">
             <label for="email-subject-input"><i data-lucide="tag"></i> Subject Line:</label>
-            <input type="text" id="email-subject-input" class="form-control" placeholder="Email subject will be generated here..." value="Application for Senior Full-Stack Engineer - Alex Rivera">
+            <input type="text" id="email-subject-input" class="form-control"
+              placeholder="Email subject will be generated here..."
+              value="Application for Senior Full-Stack Engineer - Alex Rivera">
           </div>
 
           <div class="editor-wrapper email-body-wrapper">
@@ -400,7 +413,8 @@
               <i data-lucide="sparkles"></i>
               <span>AI Outreach Note & Strategy:</span>
             </div>
-            <p>This email is tailored to address the core requirements in the Job Description while referencing specific quantitative outcomes from your Master CV. Feel free to tweak the tone before sending!</p>
+            <p>This email is tailored to address the core requirements in the Job Description while referencing specific
+              quantitative outcomes from your CV. Feel free to tweak the tone before sending!</p>
           </div>
         </div>
       </section>
@@ -408,7 +422,7 @@
       <!-- SECTION 3: Overleaf-Style Split Editor - Cover Letter -->
       <section id="cover-editor-tab" class="tab-page">
         <div class="split-editor-container" id="cover-split-container">
-          
+
           <!-- Editor Toolbar -->
           <div class="editor-toolbar">
             <div class="doc-title-info">
@@ -433,7 +447,8 @@
               <a id="btn-download-cover-pdf" href="#" download class="btn btn-primary btn-sm" title="Download PDF file">
                 <i data-lucide="download"></i> Download PDF
               </a>
-              <button class="btn btn-icon btn-secondary toggle-fullscreen-btn" data-target="cover-split-container" title="Toggle Fullscreen">
+              <button class="btn btn-icon btn-secondary toggle-fullscreen-btn" data-target="cover-split-container"
+                title="Toggle Fullscreen">
                 <i data-lucide="maximize-2"></i>
               </button>
             </div>
@@ -447,7 +462,8 @@
                 <span>Source Code</span>
                 <span class="code-lang">Cover Letter</span>
               </div>
-              <textarea id="cover-tex-code" class="code-editor" spellcheck="false" placeholder="% Generated Cover Letter LaTeX code will appear here..."></textarea>
+              <textarea id="cover-tex-code" class="code-editor" spellcheck="false"
+                placeholder="% Generated Cover Letter LaTeX code will appear here..."></textarea>
             </div>
 
             <!-- Resizer divider -->
@@ -461,7 +477,8 @@
                   <button id="btn-refresh-cover-frame" class="btn btn-xs btn-secondary" title="Refresh frame">
                     <i data-lucide="rotate-cw"></i> Refresh Frame
                   </button>
-                  <a id="btn-open-cover-pdf-tab" href="#" target="_blank" class="btn btn-xs btn-secondary" title="Open PDF in new tab">
+                  <a id="btn-open-cover-pdf-tab" href="#" target="_blank" class="btn btn-xs btn-secondary"
+                    title="Open PDF in new tab">
                     <i data-lucide="external-link"></i> New Tab
                   </a>
                 </div>
@@ -506,20 +523,25 @@
           <div class="form-group" id="api-key-group">
             <label for="api-key-input">API Key:</label>
             <div class="input-with-button">
-              <input type="password" id="api-key-input" class="form-control" placeholder="Enter API Key (or leave empty if env key is set)">
+              <input type="password" id="api-key-input" class="form-control"
+                placeholder="Enter API Key (or leave empty if env key is set)">
               <button id="btn-toggle-key-visibility" class="btn btn-secondary btn-sm" type="button">Show</button>
             </div>
-            <small class="form-help">Keys are saved locally in your browser session and used securely server-side.</small>
+            <small class="form-help">Keys are saved locally in your browser session and used securely
+              server-side.</small>
           </div>
 
           <div class="form-group">
             <label for="model-name-input">Model Name:</label>
-            <input type="text" id="model-name-input" class="form-control" value="gemini-2.0-flash" placeholder="e.g. gemini-2.0-flash, gpt-4o-mini, anthropic/claude-3.5-sonnet">
+            <input type="text" id="model-name-input" class="form-control" value="gemini-2.0-flash"
+              placeholder="e.g. gemini-2.0-flash, gpt-4o-mini, anthropic/claude-3.5-sonnet">
           </div>
 
           <div class="form-group" id="base-url-group" style="display: none;">
             <label for="base-url-input">Base Endpoint URL:</label>
-            <input type="text" id="base-url-input" class="form-control" value="http://localhost:11434/v1/chat/completions" placeholder="http://localhost:11434/v1/chat/completions">
+            <input type="text" id="base-url-input" class="form-control"
+              value="http://localhost:11434/v1/chat/completions"
+              placeholder="http://localhost:11434/v1/chat/completions">
           </div>
 
           <!-- Connection Status Callout -->
@@ -551,59 +573,173 @@
     </div>
 
     <div class="extras-section">
-      <div class="extras-section-title"><i data-lucide="palette" style="width:15px;height:15px;"></i><span>CV Theme</span></div>
+      <div class="extras-section-title"><i data-lucide="palette" style="width:15px;height:15px;"></i><span>CV
+          Theme</span></div>
       <p class="extras-hint">Click a card to select the theme. It will be used when you generate.</p>
       <div class="theme-grid" id="theme-grid">
         <div class="theme-group-label">Standard Layouts</div>
 
         <div class="theme-card active" data-theme="cloyola" data-name="Cloyola Grey">
-          <div class="tp"><div class="tp-header-bar"></div><div class="tp-body"><div class="tp-line w80"></div><div class="tp-line w60"></div><div class="tp-card"><div class="tp-line w90"></div><div class="tp-line w70"></div><div class="tp-line w55"></div></div><div class="tp-card"><div class="tp-line w85"></div><div class="tp-line w65"></div></div></div></div>
+          <div class="tp">
+            <div class="tp-header-bar"></div>
+            <div class="tp-body">
+              <div class="tp-line w80"></div>
+              <div class="tp-line w60"></div>
+              <div class="tp-card">
+                <div class="tp-line w90"></div>
+                <div class="tp-line w70"></div>
+                <div class="tp-line w55"></div>
+              </div>
+              <div class="tp-card">
+                <div class="tp-line w85"></div>
+                <div class="tp-line w65"></div>
+              </div>
+            </div>
+          </div>
           <span class="theme-card-label">Cloyola Grey</span><span class="theme-card-sub">Roboto</span>
         </div>
         <div class="theme-card" data-theme="josylad_blue" data-name="Modern Blue">
-          <div class="tp"><div class="tp-header-bar blue"></div><div class="tp-body"><div class="tp-line w80"></div><div class="tp-line w60"></div><div class="tp-card blue-border"><div class="tp-line w90"></div><div class="tp-line w70"></div></div><div class="tp-card blue-border"><div class="tp-line w85"></div><div class="tp-line w65"></div></div></div></div>
+          <div class="tp">
+            <div class="tp-header-bar blue"></div>
+            <div class="tp-body">
+              <div class="tp-line w80"></div>
+              <div class="tp-line w60"></div>
+              <div class="tp-card blue-border">
+                <div class="tp-line w90"></div>
+                <div class="tp-line w70"></div>
+              </div>
+              <div class="tp-card blue-border">
+                <div class="tp-line w85"></div>
+                <div class="tp-line w65"></div>
+              </div>
+            </div>
+          </div>
           <span class="theme-card-label">Modern Blue</span><span class="theme-card-sub">Poppins</span>
         </div>
         <div class="theme-card" data-theme="josylad_grey" data-name="Modern Grey">
-          <div class="tp"><div class="tp-header-bar dark"></div><div class="tp-body"><div class="tp-line w80"></div><div class="tp-line w60"></div><div class="tp-card dark-border"><div class="tp-line w90"></div><div class="tp-line w70"></div></div><div class="tp-card dark-border"><div class="tp-line w85"></div><div class="tp-line w65"></div></div></div></div>
+          <div class="tp">
+            <div class="tp-header-bar dark"></div>
+            <div class="tp-body">
+              <div class="tp-line w80"></div>
+              <div class="tp-line w60"></div>
+              <div class="tp-card dark-border">
+                <div class="tp-line w90"></div>
+                <div class="tp-line w70"></div>
+              </div>
+              <div class="tp-card dark-border">
+                <div class="tp-line w85"></div>
+                <div class="tp-line w65"></div>
+              </div>
+            </div>
+          </div>
           <span class="theme-card-label">Modern Grey</span><span class="theme-card-sub">Poppins</span>
         </div>
         <div class="theme-card" data-theme="samodum_bold" data-name="Clean Bold">
-          <div class="tp"><div class="tp-body" style="padding:4px;"><div class="tp-line w50 blue" style="height:5px;"></div><div class="tp-divider blue"></div><div class="tp-two-col"><div class="tp-col-left"><div class="tp-line w90 tiny"></div><div class="tp-line w70 tiny"></div></div><div class="tp-col-right"><div class="tp-line w90 tiny"></div><div class="tp-line w80 tiny"></div></div></div><div class="tp-divider blue"></div><div class="tp-two-col"><div class="tp-col-left"><div class="tp-line w90 tiny"></div></div><div class="tp-col-right"><div class="tp-line w80 tiny"></div></div></div></div></div>
+          <div class="tp">
+            <div class="tp-body" style="padding:4px;">
+              <div class="tp-line w50 blue" style="height:5px;"></div>
+              <div class="tp-divider blue"></div>
+              <div class="tp-two-col">
+                <div class="tp-col-left">
+                  <div class="tp-line w90 tiny"></div>
+                  <div class="tp-line w70 tiny"></div>
+                </div>
+                <div class="tp-col-right">
+                  <div class="tp-line w90 tiny"></div>
+                  <div class="tp-line w80 tiny"></div>
+                </div>
+              </div>
+              <div class="tp-divider blue"></div>
+              <div class="tp-two-col">
+                <div class="tp-col-left">
+                  <div class="tp-line w90 tiny"></div>
+                </div>
+                <div class="tp-col-right">
+                  <div class="tp-line w80 tiny"></div>
+                </div>
+              </div>
+            </div>
+          </div>
           <span class="theme-card-label">Clean Bold</span><span class="theme-card-sub">Josefin Sans</span>
         </div>
         <div class="theme-card" data-theme="krishnavalliappan" data-name="Classic ATS">
-          <div class="tp"><div class="tp-body" style="padding:5px;align-items:center;"><div class="tp-line w60" style="align-self:center;"></div><div class="tp-line w40 tiny" style="align-self:center;"></div><div class="tp-divider dark"></div><div class="tp-line w80"></div><div class="tp-line w70"></div><div class="tp-divider dark"></div><div class="tp-line w90"></div><div class="tp-line w60"></div></div></div>
+          <div class="tp">
+            <div class="tp-body" style="padding:5px;align-items:center;">
+              <div class="tp-line w60" style="align-self:center;"></div>
+              <div class="tp-line w40 tiny" style="align-self:center;"></div>
+              <div class="tp-divider dark"></div>
+              <div class="tp-line w80"></div>
+              <div class="tp-line w70"></div>
+              <div class="tp-divider dark"></div>
+              <div class="tp-line w90"></div>
+              <div class="tp-line w60"></div>
+            </div>
+          </div>
           <span class="theme-card-label">Classic ATS</span><span class="theme-card-sub">Arial</span>
         </div>
 
         <div class="theme-group-label">Sidebar + Photo &#128248;</div>
         <div class="theme-card" data-theme="sidebar_dark" data-name="Sidebar Dark Navy">
-          <div class="tp" style="flex-direction:row;padding:0;"><div class="tp-sidebar dark-sidebar"><div class="tp-avatar-circle"></div><div class="tp-line w80 light tiny"></div><div class="tp-line w60 light tiny"></div><div class="tp-divider light-dim"></div><div class="tp-line w90 light tiny"></div><div class="tp-line w75 light tiny"></div></div><div class="tp-main-area"><div class="tp-line w90 dark-text"></div><div class="tp-line w70 dark-text tiny"></div><div class="tp-divider dark-dim"></div><div class="tp-line w85 dark-text tiny"></div><div class="tp-line w65 dark-text tiny"></div></div></div>
+          <div class="tp" style="flex-direction:row;padding:0;">
+            <div class="tp-sidebar dark-sidebar">
+              <div class="tp-avatar-circle"></div>
+              <div class="tp-line w80 light tiny"></div>
+              <div class="tp-line w60 light tiny"></div>
+              <div class="tp-divider light-dim"></div>
+              <div class="tp-line w90 light tiny"></div>
+              <div class="tp-line w75 light tiny"></div>
+            </div>
+            <div class="tp-main-area">
+              <div class="tp-line w90 dark-text"></div>
+              <div class="tp-line w70 dark-text tiny"></div>
+              <div class="tp-divider dark-dim"></div>
+              <div class="tp-line w85 dark-text tiny"></div>
+              <div class="tp-line w65 dark-text tiny"></div>
+            </div>
+          </div>
           <span class="theme-card-label">Sidebar Dark Navy</span><span class="theme-card-sub">Nunito + Photo</span>
         </div>
         <div class="theme-card" data-theme="sidebar_light" data-name="Sidebar Light Blue">
-          <div class="tp" style="flex-direction:row;padding:0;"><div class="tp-sidebar light-sidebar"><div class="tp-avatar-circle" style="border:2px solid #1d4ed8;background:#9ca3af;"></div><div class="tp-line w80 dark-text tiny"></div><div class="tp-line w60 dark-text tiny"></div><div class="tp-divider blue-dim"></div><div class="tp-line w90 blue tiny"></div><div class="tp-line w75 dark-text tiny"></div></div><div class="tp-main-area"><div class="tp-line w90 dark-text"></div><div class="tp-line w70 blue tiny"></div><div class="tp-divider blue-dim"></div><div class="tp-line w85 dark-text tiny"></div></div></div>
+          <div class="tp" style="flex-direction:row;padding:0;">
+            <div class="tp-sidebar light-sidebar">
+              <div class="tp-avatar-circle" style="border:2px solid #1d4ed8;background:#9ca3af;"></div>
+              <div class="tp-line w80 dark-text tiny"></div>
+              <div class="tp-line w60 dark-text tiny"></div>
+              <div class="tp-divider blue-dim"></div>
+              <div class="tp-line w90 blue tiny"></div>
+              <div class="tp-line w75 dark-text tiny"></div>
+            </div>
+            <div class="tp-main-area">
+              <div class="tp-line w90 dark-text"></div>
+              <div class="tp-line w70 blue tiny"></div>
+              <div class="tp-divider blue-dim"></div>
+              <div class="tp-line w85 dark-text tiny"></div>
+            </div>
+          </div>
           <span class="theme-card-label">Sidebar Light Blue</span><span class="theme-card-sub">Lato + Photo</span>
         </div>
       </div>
     </div>
 
     <div class="extras-section">
-      <div class="extras-section-title"><i data-lucide="camera" style="width:15px;height:15px;"></i><span>Profile Photo</span></div>
-      <p class="extras-hint">Embedded in your CV on generation. Sidebar themes: circular avatar. Standard themes: appears beside your name.</p>
+      <div class="extras-section-title"><i data-lucide="camera" style="width:15px;height:15px;"></i><span>Profile
+          Photo</span></div>
+      <p class="extras-hint">Embedded in your CV on generation. Sidebar themes: circular avatar. Standard themes:
+        appears beside your name.</p>
       <div class="photo-upload-area" id="photo-upload-area">
         <div id="photo-preview-container" class="photo-preview-container" style="display:none;">
           <img id="photo-preview-img" src="" alt="Profile Photo" class="photo-preview-img">
           <div class="photo-preview-meta">
             <span id="photo-file-name" class="photo-file-name"></span>
-            <button id="btn-remove-photo" class="btn btn-xs btn-secondary" style="color:#ef4444;"><i data-lucide="trash-2" style="width:12px;height:12px;"></i> Remove</button>
+            <button id="btn-remove-photo" class="btn btn-xs btn-secondary" style="color:#ef4444;"><i
+                data-lucide="trash-2" style="width:12px;height:12px;"></i> Remove</button>
           </div>
         </div>
         <div id="photo-upload-prompt" class="photo-upload-prompt">
           <i data-lucide="image-plus" style="width:30px;height:30px;color:var(--accent);opacity:0.6;"></i>
           <p style="margin:6px 0 10px;font-size:0.8rem;color:var(--text-muted);">JPG, PNG or WebP &middot; max 5MB</p>
-          <label for="photo-file-input" class="btn btn-secondary btn-sm"><i data-lucide="upload" style="width:14px;height:14px;"></i> Choose Photo</label>
+          <label for="photo-file-input" class="btn btn-secondary btn-sm"><i data-lucide="upload"
+              style="width:14px;height:14px;"></i> Choose Photo</label>
           <input type="file" id="photo-file-input" accept="image/jpeg,image/png,image/webp" style="display:none;">
         </div>
       </div>
@@ -611,50 +747,412 @@
   </aside>
 
   <style>
-  .extras-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1199;backdrop-filter:blur(2px);}
-  .extras-drawer{position:fixed;top:0;right:-440px;width:420px;max-width:95vw;height:100vh;background:var(--bg-card,#1a1f2e);border-left:1px solid var(--border,rgba(255,255,255,0.08));z-index:1200;display:flex;flex-direction:column;transition:right 0.3s cubic-bezier(0.32,0.72,0,1);overflow-y:auto;box-shadow:-8px 0 40px rgba(0,0,0,0.4);}
-  .extras-drawer.open{right:0;}
-  .extras-drawer-header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px 14px;border-bottom:1px solid var(--border,rgba(255,255,255,0.08));position:sticky;top:0;background:var(--bg-card,#1a1f2e);z-index:1;}
-  .extras-section{padding:16px 20px;border-bottom:1px solid var(--border,rgba(255,255,255,0.06));}
-  .extras-section:last-child{border-bottom:none;}
-  .extras-section-title{display:flex;align-items:center;gap:7px;font-size:0.77rem;font-weight:700;color:var(--accent,#818cf8);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.6px;}
-  .extras-hint{font-size:0.72rem;color:var(--text-muted,#6b7280);line-height:1.45;margin-bottom:12px;}
-  .cta-theme-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.25);border-radius:20px;padding:4px 8px 4px 10px;font-size:0.72rem;color:var(--text-secondary,#9ca3af);margin-bottom:8px;}
-  .cta-pill-btn{background:rgba(129,140,248,0.2);border:none;border-radius:12px;padding:2px 8px;font-size:0.68rem;color:var(--accent,#818cf8);cursor:pointer;margin-left:4px;font-weight:600;}
-  .cta-pill-btn:hover{background:rgba(129,140,248,0.35);}
-  .theme-group-label{grid-column:1/-1;font-size:0.67rem;font-weight:700;color:var(--text-muted,#6b7280);text-transform:uppercase;letter-spacing:0.7px;padding:6px 0 4px;border-bottom:1px solid var(--border,rgba(255,255,255,0.06));}
-  .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-  .theme-card{cursor:pointer;border-radius:10px;border:2px solid var(--border,rgba(255,255,255,0.1));overflow:hidden;transition:all 0.2s;background:var(--bg-secondary,#131825);}
-  .theme-card:hover{border-color:rgba(129,140,248,0.5);transform:translateY(-2px);box-shadow:0 4px 16px rgba(129,140,248,0.15);}
-  .theme-card.active{border-color:var(--accent,#818cf8);box-shadow:0 0 0 3px rgba(129,140,248,0.2);}
-  .theme-card-label{display:block;font-size:0.7rem;font-weight:700;color:var(--text-primary,#e2e8f0);padding:4px 6px 0;text-align:center;}
-  .theme-card-sub{display:block;font-size:0.63rem;color:var(--text-muted,#6b7280);text-align:center;padding-bottom:6px;}
-  .tp{width:100%;height:84px;overflow:hidden;padding:5px;display:flex;flex-direction:column;gap:2px;background:#f9fafb;}
-  .tp-header-bar{height:14px;border-radius:2px;background:#9ca3af;margin-bottom:2px;flex-shrink:0;}
-  .tp-header-bar.blue{background:#3498db;}.tp-header-bar.dark{background:#4a4a4a;}
-  .tp-body{display:flex;flex-direction:column;gap:2px;flex:1;}
-  .tp-line{height:4px;border-radius:2px;background:#d1d5db;flex-shrink:0;}
-  .tp-line.tiny{height:3px;}
-  .w90{width:90%}.w85{width:85%}.w80{width:80%}.w75{width:75%}.w70{width:70%}.w65{width:65%}.w60{width:60%}.w55{width:55%}.w50{width:50%}.w40{width:40%}
-  .tp-line.blue{background:#3498db;}.tp-line.dark-text{background:#374151;}.tp-line.light{background:rgba(255,255,255,0.65);}.tp-line.light-dim{background:rgba(255,255,255,0.2);}
-  .tp-card{border-radius:2px;padding:2px 3px;display:flex;flex-direction:column;gap:1.5px;background:#f3f4f6;margin-top:1px;flex-shrink:0;}
-  .tp-card.blue-border{border-left:2px solid #3498db;}.tp-card.dark-border{border-left:2px solid #4a4a4a;}
-  .tp-divider{height:1px;background:#e5e7eb;margin:2px 0;flex-shrink:0;}
-  .tp-divider.blue{background:#3498db;}.tp-divider.dark{background:#4a4a4a;}.tp-divider.dark-dim{background:rgba(27,42,74,0.3);}.tp-divider.light-dim{background:rgba(255,255,255,0.15);}.tp-divider.blue-dim{background:rgba(29,78,216,0.3);}
-  .tp-two-col{display:flex;gap:4px;flex:1;min-height:0;}
-  .tp-col-left{width:28%;display:flex;flex-direction:column;gap:1.5px;}.tp-col-right{flex:1;display:flex;flex-direction:column;gap:1.5px;}
-  .tp-sidebar{width:33%;padding:4px 3px;display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;}
-  .dark-sidebar{background:#1b2a4a;}.light-sidebar{background:#eef2f8;border-right:2px solid #1d4ed8;}
-  .tp-main-area{flex:1;background:#fff;padding:5px 4px;display:flex;flex-direction:column;gap:2px;}
-  .tp-avatar-circle{width:18px;height:18px;border-radius:50%;background:#6b7280;margin-bottom:2px;flex-shrink:0;}
-  .photo-upload-area{border:2px dashed var(--border,rgba(255,255,255,0.15));border-radius:10px;overflow:hidden;}
-  .photo-upload-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 16px;text-align:center;}
-  .photo-preview-container{display:flex;align-items:center;gap:12px;padding:12px;}
-  .photo-preview-img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--accent,#818cf8);flex-shrink:0;}
-  .photo-preview-meta{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;}
-  .photo-file-name{font-size:0.72rem;color:var(--text-secondary,#9ca3af);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .extras-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1199;
+      backdrop-filter: blur(2px);
+    }
+
+    .extras-drawer {
+      position: fixed;
+      top: 0;
+      right: -440px;
+      width: 420px;
+      max-width: 95vw;
+      height: 100vh;
+      background: var(--bg-card, #1a1f2e);
+      border-left: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      z-index: 1200;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+      overflow-y: auto;
+      box-shadow: -8px 0 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .extras-drawer.open {
+      right: 0;
+    }
+
+    .extras-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      position: sticky;
+      top: 0;
+      background: var(--bg-card, #1a1f2e);
+      z-index: 1;
+    }
+
+    .extras-section {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.06));
+    }
+
+    .extras-section:last-child {
+      border-bottom: none;
+    }
+
+    .extras-section-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.77rem;
+      font-weight: 700;
+      color: var(--accent, #818cf8);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .extras-hint {
+      font-size: 0.72rem;
+      color: var(--text-muted, #6b7280);
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
+    .cta-theme-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(129, 140, 248, 0.1);
+      border: 1px solid rgba(129, 140, 248, 0.25);
+      border-radius: 20px;
+      padding: 4px 8px 4px 10px;
+      font-size: 0.72rem;
+      color: var(--text-secondary, #9ca3af);
+      margin-bottom: 8px;
+    }
+
+    .cta-pill-btn {
+      background: rgba(129, 140, 248, 0.2);
+      border: none;
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 0.68rem;
+      color: var(--accent, #818cf8);
+      cursor: pointer;
+      margin-left: 4px;
+      font-weight: 600;
+    }
+
+    .cta-pill-btn:hover {
+      background: rgba(129, 140, 248, 0.35);
+    }
+
+    .theme-group-label {
+      grid-column: 1/-1;
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: var(--text-muted, #6b7280);
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      padding: 6px 0 4px;
+      border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.06));
+    }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .theme-card {
+      cursor: pointer;
+      border-radius: 10px;
+      border: 2px solid var(--border, rgba(255, 255, 255, 0.1));
+      overflow: hidden;
+      transition: all 0.2s;
+      background: var(--bg-secondary, #131825);
+    }
+
+    .theme-card:hover {
+      border-color: rgba(129, 140, 248, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(129, 140, 248, 0.15);
+    }
+
+    .theme-card.active {
+      border-color: var(--accent, #818cf8);
+      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+    }
+
+    .theme-card-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-primary, #e2e8f0);
+      padding: 4px 6px 0;
+      text-align: center;
+    }
+
+    .theme-card-sub {
+      display: block;
+      font-size: 0.63rem;
+      color: var(--text-muted, #6b7280);
+      text-align: center;
+      padding-bottom: 6px;
+    }
+
+    .tp {
+      width: 100%;
+      height: 84px;
+      overflow: hidden;
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      background: #f9fafb;
+    }
+
+    .tp-header-bar {
+      height: 14px;
+      border-radius: 2px;
+      background: #9ca3af;
+      margin-bottom: 2px;
+      flex-shrink: 0;
+    }
+
+    .tp-header-bar.blue {
+      background: #3498db;
+    }
+
+    .tp-header-bar.dark {
+      background: #4a4a4a;
+    }
+
+    .tp-body {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .tp-line {
+      height: 4px;
+      border-radius: 2px;
+      background: #d1d5db;
+      flex-shrink: 0;
+    }
+
+    .tp-line.tiny {
+      height: 3px;
+    }
+
+    .w90 {
+      width: 90%
+    }
+
+    .w85 {
+      width: 85%
+    }
+
+    .w80 {
+      width: 80%
+    }
+
+    .w75 {
+      width: 75%
+    }
+
+    .w70 {
+      width: 70%
+    }
+
+    .w65 {
+      width: 65%
+    }
+
+    .w60 {
+      width: 60%
+    }
+
+    .w55 {
+      width: 55%
+    }
+
+    .w50 {
+      width: 50%
+    }
+
+    .w40 {
+      width: 40%
+    }
+
+    .tp-line.blue {
+      background: #3498db;
+    }
+
+    .tp-line.dark-text {
+      background: #374151;
+    }
+
+    .tp-line.light {
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .tp-line.light-dim {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .tp-card {
+      border-radius: 2px;
+      padding: 2px 3px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5px;
+      background: #f3f4f6;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .tp-card.blue-border {
+      border-left: 2px solid #3498db;
+    }
+
+    .tp-card.dark-border {
+      border-left: 2px solid #4a4a4a;
+    }
+
+    .tp-divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 2px 0;
+      flex-shrink: 0;
+    }
+
+    .tp-divider.blue {
+      background: #3498db;
+    }
+
+    .tp-divider.dark {
+      background: #4a4a4a;
+    }
+
+    .tp-divider.dark-dim {
+      background: rgba(27, 42, 74, 0.3);
+    }
+
+    .tp-divider.light-dim {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .tp-divider.blue-dim {
+      background: rgba(29, 78, 216, 0.3);
+    }
+
+    .tp-two-col {
+      display: flex;
+      gap: 4px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .tp-col-left {
+      width: 28%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5px;
+    }
+
+    .tp-col-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5px;
+    }
+
+    .tp-sidebar {
+      width: 33%;
+      padding: 4px 3px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .dark-sidebar {
+      background: #1b2a4a;
+    }
+
+    .light-sidebar {
+      background: #eef2f8;
+      border-right: 2px solid #1d4ed8;
+    }
+
+    .tp-main-area {
+      flex: 1;
+      background: #fff;
+      padding: 5px 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .tp-avatar-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #6b7280;
+      margin-bottom: 2px;
+      flex-shrink: 0;
+    }
+
+    .photo-upload-area {
+      border: 2px dashed var(--border, rgba(255, 255, 255, 0.15));
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .photo-upload-prompt {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 16px;
+      text-align: center;
+    }
+
+    .photo-preview-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .photo-preview-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent, #818cf8);
+      flex-shrink: 0;
+    }
+
+    .photo-preview-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .photo-file-name {
+      font-size: 0.72rem;
+      color: var(--text-secondary, #9ca3af);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   </style>
 
   <script src="app.js"></script>
 </body>
+
 </html>
